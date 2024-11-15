@@ -1,6 +1,6 @@
 const apiKey = 'AIzaSyBLOOYaN0zUBPUkA0FyPot1QL-LFWCpEzc';  // Replace with your Google API key
 const spreadsheetId = '1a4JmwnRPvVHOh5BNOZ-F_sqspasdcowRB7uF-qScd48';  // Replace with your spreadsheet ID
-const range = 'Sheet1!A1:G500';  // Adjust the range as needed
+const range = 'Sheet1!A1:I500';  // Adjust the range as needed
 
 let tableData = [];  // Array to store table data
 
@@ -38,7 +38,7 @@ function displayTable(rows) {
         tr.appendChild(imgTd);
 
         // Create cells for the remaining employee details
-        for (let i = 1; i < 500; i++) {
+        for (let i = 1; i < rowData.length; i++) {
             const td = document.createElement("td");
             td.textContent = rowData[i] || "";  // Fill cell with data or empty if undefined
             tr.appendChild(td);
