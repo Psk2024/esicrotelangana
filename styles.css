@@ -102,6 +102,13 @@ tr:hover {
   -webkit-border-radius: 25px;
   border-radius: 25px;
 }
+#imageContainer{
+   position: relative;
+    
+   height: auto;
+   width: 20vw;
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {
