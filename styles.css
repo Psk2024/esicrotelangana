@@ -1,1 +1,95 @@
+/* General Body and Container Style */
+body {
+    font-family: Arial, sans-serif;
+    background: url('https://www.w3schools.com/w3images/forestbridge.jpg') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 35vh;
+    color: white;
+}
 
+.container {
+    width: 85%;
+    margin: auto;
+    text-align: center;
+}
+
+/* Title Style */
+.title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+/* Search Input Styling */
+#searchInput {
+    padding: 10px;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+/* Table Container Style with Glassmorphism Effect */
+.table-container {
+    background: rgba(255, 255, 255, 0.1); /* Translucent background */
+    backdrop-filter: blur(10px); /* Frosted glass effect */
+    border-radius: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    overflow: hidden;
+}
+
+/* Wrapper around the table for enabling scrolling */
+.table-wrapper {
+    overflow-y: auto;
+    max-height: 600px; /* Set a fixed height to enable scrolling */
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    
+}
+
+/* Table Header Styling */
+th {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 12px 15px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    
+    
+}
+
+/* Table Cell Styling */
+td {
+    padding: 12px 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Hover Effect for Rows */
+tr:hover {
+    background: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    table {
+        font-size: 0.9rem;
+    }
+
+    th, td {
+        padding: 10px;
+    }
+}
