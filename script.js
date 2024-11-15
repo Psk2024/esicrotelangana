@@ -38,7 +38,7 @@ function displayTable(rows) {
         tr.appendChild(imgTd);
 
         // Create cells for the remaining employee details
-        for (let i = 1; i < rowData.length; i++) {
+        for (let i = 1; i < 500; i++) {
             const td = document.createElement("td");
             td.textContent = rowData[i] || "";  // Fill cell with data or empty if undefined
             tr.appendChild(td);
