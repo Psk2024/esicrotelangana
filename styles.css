@@ -82,33 +82,6 @@ tr:hover {
     background: rgba(255, 255, 255, 0.2);
     cursor: pointer;
 }
-img {
-  height: 150px;
-  width: 100%;
-
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  background-image: url(https://picsum.photos/330/300);
-  background-repeat: no-repeat;
-  background-position: center center;
-  
-  border: 2px solid #fff;
-  -moz-box-shadow: 10px 10px 5px #ccc;
-  -webkit-box-shadow: 10px 10px 5px #ccc;
-  box-shadow: 10px 10px 5px #ccc;
-  -moz-border-radius: 25px;
-  -webkit-border-radius: 25px;
-  border-radius: 25px;
-}
-#imageContainer{
-   position: relative;
-    
-   height: auto;
-   width: 2vw;
-}
-
 
 /* Responsive Design */
 @media (max-width: 768px) {
