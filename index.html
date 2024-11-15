@@ -1,1 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESIC TELANGANA STAFF LIST</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    
+    <div class="container">
+        <h1>ESIC TELANGANA STAFF LIST</h1>
+       
+        <input type="text" id="searchInput" placeholder="Search employees..." oninput="filterTable()">
 
+        <div class="table-container">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Photo</th>
+                            <th>Emp No</th>
+                            <th>Name</th>
+                            <th>Designation</th>
+                            <th>Branch</th>
+                            <th>Date of Joining</th>
+                            <th>Service in Current Place</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-rows">
+                        <!-- Employee data rows will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
