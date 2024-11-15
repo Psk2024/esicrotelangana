@@ -1,6 +1,6 @@
 const apiKey = 'AIzaSyBLOOYaN0zUBPUkA0FyPot1QL-LFWCpEzc';  // Replace with your Google API key
 const spreadsheetId = '1a4JmwnRPvVHOh5BNOZ-F_sqspasdcowRB7uF-qScd48';  // Replace with your spreadsheet ID
-const range = 'Sheet1!A1:I100';  // Adjust the range as needed
+const range = 'Sheet1!A1:H500';  // Adjust the range as needed
 
 let tableData = [];  // Array to store table data
 
