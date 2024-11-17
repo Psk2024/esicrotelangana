@@ -12,22 +12,13 @@
         <img src="esic2.png" alt="ESIC Logo" height="150" width="150">
         <h1>STAFF LIST, TELANGANA</h1>
         <input type="text" id="searchInput" placeholder="Search employees..." oninput="filterTable()">
-
         <div class="table-container">
             <div class="table-wrapper">
                 <table>
                     <thead>
-                        <tr>
-                            <th>Photo</th>
-                            <th>Emp No</th>
-                            <th>Name</th>
-                            <th>Designation</th>
-                            <th>Branch</th>
-                            <th>Date of Joining</th>
-                            <th>Service in Current Place</th>
-                        </tr>
+                        <tr id="table-headers">
                     </thead>
-                    <tbody id="data-rows">
+                    <tbody id="table-body">
                         <!-- Employee data rows will be dynamically inserted here -->
                     </tbody>
                 </table>
