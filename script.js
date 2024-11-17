@@ -3,7 +3,6 @@ const spreadsheetId = '1a4JmwnRPvVHOh5BNOZ-F_sqspasdcowRB7uF-qScd48';  // Replac
 const range = 'Sheet1!A1:I500';  // Adjust the range as needed
 
 let tableData = [];  // Array to store table data
-let sortOrder = {};  // Object to store the sort order for each column
 
 // Fetch data from Google Sheets
 async function fetchData() {
@@ -12,9 +11,8 @@ async function fetchData() {
     const data = await response.json();
 
     if (data.values && data.values.length > 0) {
-        tableData = data.values;  // Store data including the header
+        tableData = data.values;  // Store data excluding the header
         displayTable(tableData);
-        createSortableHeaders(tableData[0]);  // Create sortable headers using the first row as headers
     } else {
         console.error("No data found.");
     }
@@ -25,7 +23,7 @@ function displayTable(rows) {
     const dataRows = document.getElementById("data-rows");
     dataRows.innerHTML = '';  // Clear existing rows
 
-    rows.slice(1).forEach(rowData => {  // Exclude the header row
+    rows.forEach(rowData => {
         const tr = document.createElement("tr");
 
         // Create the image cell
@@ -50,39 +48,14 @@ function displayTable(rows) {
     });
 }
 
-// Create sortable table headers
-function createSortableHeaders(headers) {
-    const headerRow = document.getElementById("table-headers");
-    headerRow.innerHTML = '';  // Clear existing headers
-
-    headers.forEach((header, index) => {
-        const th = document.createElement("th");
-        th.textContent = header;
-        th.style.cursor = "pointer";
-
-        // Add a click event listener for sorting
-        th.addEventListener("click", () => {
-            sortOrder[index] = !sortOrder[index];  // Toggle sort order
-            sortTable(index, sortOrder[index]);
-        });
-
-        headerRow.appendChild(th);
-    });
-}
-
-// Sort table data by a specific column
-function sortTable(columnIndex, ascending) {
-    const sortedData = [...tableData];  // Copy the data
-    sortedData.slice(1).sort((a, b) => {
-        const aValue = a[columnIndex] || "";  // Handle undefined values
-        const bValue = b[columnIndex] || "";
-
-        if (aValue < bValue) return ascending ? -1 : 1;
-        if (aValue > bValue) return ascending ? 1 : -1;
-        return 0;
+// Function to filter the table based on user input
+function filterTable() {
+    const searchInput = document.getElementById("searchInput").value.toLowerCase();
+    const filteredData = tableData.filter(row => {
+        return row.some(cell => cell.toLowerCase().includes(searchInput));
     });
 
-    displayTable(sortedData);
+    displayTable(filteredData);
 }
 
 // Fetch and display data when the page loads
