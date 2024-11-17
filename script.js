@@ -138,15 +138,6 @@ function displayTable(rows) {
     });
 }
 
-// Function to filter the table based on user input
-function filterTable() {
-    const searchInput = document.getElementById("searchInput").value.toLowerCase();
-    const filteredData = tableData.filter(row => {
-        return row.some(cell => cell.toLowerCase().includes(searchInput));
-    });
-
-    displayTable(filteredData);
-}
 
 // Fetch and display data when the page loads
 fetchData();
