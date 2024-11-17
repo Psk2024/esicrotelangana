@@ -1,0 +1,80 @@
+/* General Container Styling */
+.container {
+    text-align: center;
+    margin: 20px auto;
+}
+
+/* Logo and Header */
+img {
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Search Input Styling */
+#searchInput {
+    margin-top: 10px;
+    padding: 10px;
+    width: 60%;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+}
+
+#searchInput:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Table Container */
+.table-container {
+    margin-top: 20px;
+    overflow-x: auto;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    font-size: 14px;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+/* Header Styling */
+th {
+    background-color: #f4f4f4;
+    cursor: pointer;
+    color: #333;
+    font-weight: bold;
+}
+
+th:hover {
+    background-color: #ddd;
+}
+
+/* Row Styling */
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Image Styling */
+td img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
