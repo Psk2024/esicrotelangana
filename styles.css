@@ -29,7 +29,7 @@ img{
 }
 .table-wrapper {
     overflow-y:auto;
-    max-height: 600px;
+    max-height: 400px;
 }
 
 /* Title Style */
