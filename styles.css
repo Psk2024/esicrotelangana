@@ -121,7 +121,7 @@ tr:hover {
     color:white;
     position: fixed;
     z-index: 10;
-    background: rgba(255, 255, 255, 0.2); /* Frosted glass effect */
+    background: rgba(255, 255, 255, 0.4); /* Frosted glass effect */
     backdrop-filter: blur(28px); /* Glassmorphism */
     border-radius: 10px;
     padding: 10px;
