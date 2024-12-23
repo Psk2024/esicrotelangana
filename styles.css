@@ -2,46 +2,41 @@ body {
     font-family: 'Roboto', sans-serif;
     background: url('https://www.w3schools.com/w3images/forestbridge.jpg') no-repeat center center fixed;
     background-size: cover;
-    margin: 10px;
-    padding: 10px;
+    margin: 0;
+    padding: 0;
     color: white;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; /* Ensure full screen height */
+    min-height: 100vh;
     text-align: center;
 }
 
-/* Main Container */
+/* Main container */
 .container {
-    position: fixed;
     width: 90%;
     max-width: 1200px;
     margin: auto;
     text-align: center;
-    /* background: rgba(255, 255, 255, 0.2); /* Slight transparency */
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
-img{
+
+.container img {
     filter: drop-shadow(5px 5px 5px green);
 }
+
 .table-wrapper {
-    overflow-y:auto;
-    max-height: 500px;
+    overflow-y: auto;
+    max-height: 400px;
 }
 
-/* Title Style */
 h1 {
     font-size: 2rem;
     margin-bottom: 20px;
 }
-h2 {
-    color: white;
-}
 
-/* Search Input Styling */
 #searchInput {
     padding: 12px;
     width: 90%;
@@ -52,28 +47,22 @@ h2 {
     background: rgba(255, 255, 255, 0.2);
     color: white;
     font-size: 1rem;
-    position: relative;
 }
 
 #searchInput::placeholder {
     color: white;
 }
 
-/* Table Container Style with Glassmorphism Effect */
 .table-container {
-    background: rgba(255, 255, 255, 0.1); /* Translucent background */
-    backdrop-filter: blur(10px); /* Frosted glass effect */
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
     border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 0px;
     overflow: hidden;
 }
 
-/* Table Styling */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
 }
 
 th, td {
@@ -91,16 +80,12 @@ td {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-tr:nth-child(even) td {
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
 tr:hover {
     background-color: rgba(255, 255, 255, 0.3);
     cursor: pointer;
 }
 
-/* Popup Styling (Frosted Glass Effect) */
+/* Popup styling */
 .popup-overlay {
     position: fixed;
     top: 0;
@@ -109,7 +94,6 @@ tr:hover {
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     z-index: 9;
-    color:black;
 }
 
 .popup.hidden,
@@ -118,17 +102,16 @@ tr:hover {
 }
 
 .popup {
-    color:white;
     position: fixed;
     z-index: 10;
-    background: rgba(255, 255, 255, 0.4); /* Frosted glass effect */
-    backdrop-filter: blur(28px); /* Glassmorphism */
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(28px);
     border-radius: 10px;
     padding: 10px;
-    max-height: 70%;
-    max-width: 60%;
+    max-height: 90%;
+    max-width: 90%;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-    top: 35%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
@@ -140,7 +123,7 @@ tr:hover {
     font-size: 20px;
     font-weight: bold;
     color: #333;
-    cursor: pointer;
+    cursor: hand;
     background: none;
     border: none;
     padding: 5px;
@@ -148,12 +131,4 @@ tr:hover {
 
 .close-btn:hover {
     color: #ff0000;
-}
-@media (max-width:768px) {
-    table {
-        font-size: 0.9rem;
-    }
-    th, td {
-        padding: 10;
-    }
 }
