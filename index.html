@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESIC TELANGANA STAFF LIST</title>
+    <title>ESIC Telangana Staff List</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <img src="esic2.png" alt="ESIC Logo" height="150" width="150">
-        <h1>STAFF LIST, TELANGANA</h1>
+        <h1>Staff List - Telangana</h1>
         <input type="text" id="searchInput" placeholder="Search employees..." oninput="filterTable()">
-        <div class="table-container" id="sortableTable">
+        <div class="table-container">
             <div class="table-wrapper">
                 <table>
                     <thead>
@@ -24,14 +24,14 @@
             </div>
         </div>
     </div>
-
-    <!-- Popup structure -->
+    <!-- Popup for employee details -->
     <div class="popup hidden" id="popup">
         <button class="close-btn" onclick="closePopup()">×</button>
-        <div id="popup-content"></div>
+        <div id="popup-content">
+            <img id="employeeimage">
+        </div>
     </div>
     <div class="popup-overlay hidden" id="popup-overlay"></div>
-
     <script src="script.js"></script>
 </body>
 </html>
