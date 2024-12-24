@@ -115,6 +115,10 @@ tr:hover {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+popup.tr:hover {
+   /* background-color: rgba(255, 255, 255, 0.3); */
+    cursor: pointer;
+}
 
 .close-btn {
     position: absolute;
