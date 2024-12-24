@@ -116,7 +116,10 @@ td {
     left: 50%;
     transform: translate(-50%, -50%);
 }
-
+.popup tr:hover {
+    background-color: transparent;
+    cursor: default;
+}
 
 .close-btn {
     position: absolute;
