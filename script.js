@@ -2,7 +2,7 @@
 let allRowsData = [];
 const apiKey = 'AIzaSyDSI9hpK2CKTkjjT_5gPpLMuzwAFzYPWZ4'; // Replace with your actual API key
 const spreadsheetId = '1a4JmwnRPvVHOh5BNOZ-F_sqspasdcowRB7uF-qScd48'; // Replace with your actual spreadsheet ID
-const mainRange = 'Sheet2!A1:E500'; // Adjust the range to match your sheet
+const mainRange = 'Main!A1:F500'; // Adjust the range to match your sheet
 const secondaryRange = 'Sheet3!A1:G500'; // Adjust if needed
 
 // Fetch main table data
