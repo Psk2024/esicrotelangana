@@ -61,7 +61,7 @@ function displayTableData(rows) {
         // Use Employee ID (first column) to fetch secondary data
         const employeeId = row[0]; // Assuming the unique Employee ID is in column A
         const employeeName = row[1]; // Assuming Employee Name is in column B
-        tr.onclick = () => fetchSecondarySheetData(employeeId, employeeName);
+       // tr.onclick = () => fetchSecondarySheetData(employeeId, employeeName);
         tableBody.appendChild(tr);
     });
 }
