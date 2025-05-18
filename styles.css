@@ -4,6 +4,12 @@ body {
   background: linear-gradient(to top left, rgba(255, 255, 255, 0.3), rgba(200, 200, 255, 0.2));
   text-align: center;
 }
+@font-face {
+  font-family: 'Carltine';
+  src: url('Carltine.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 table {
   width: 80%;
