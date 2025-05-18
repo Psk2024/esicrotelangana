@@ -1,138 +1,95 @@
-// Global variable to hold full table data
-let allRowsData = [];
-const apiKey = 'AIzaSyDSI9hpK2CKTkjjT_5gPpLMuzwAFzYPWZ4'; // Replace with your actual API key
-const spreadsheetId = '1a4JmwnRPvVHOh5BNOZ-F_sqspasdcowRB7uF-qScd48'; // Replace with your actual spreadsheet ID
-const mainRange = 'Main!A1:F500'; // Adjust the range to match your sheet
-const secondaryRange = 'Sheet3!A1:G500'; // Adjust if needed
+const apiKey = 'AIzaSyBLOOYaN0zUBPUkA0FyPot1QL-LFWCpEzc';
+const spreadsheetId = '1a4JmwnRPvVHOh5BNOZ-F_sqspasdcowRB7uF-qScd48';
+const range = 'Employees!A1:G';
 
-// Fetch main table data
-async function fetchTableData() {
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${mainRange}?key=${apiKey}`;
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
+let allData = [];
 
-        if (data.values && data.values.length > 0) {
-            const [headers, ...rows] = data.values;
-            displayHeaders(headers);
-            allRowsData = rows; // Store data globally
-            displayTableData(rows);
-        } else {
-            console.error('No data found in the spreadsheet.');
-        }
-    } catch (error) {
-        console.error('Error fetching data:', error);
-    }
-}
+async function fetchData() {
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?key=${apiKey}`;
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    const rows = data.values || [];
 
-// Display table headers
-function displayHeaders(headers) {
-    const tableHeaders = document.getElementById('table-headers');
-    tableHeaders.innerHTML = '';
-    headers.forEach((header, index) => {
-        const th = document.createElement('th');
-        th.innerHTML = `${header} <span class="sort-symbol"></span>`;
-        th.onclick = () => sortTable(index);
-        tableHeaders.appendChild(th);
+    if (rows.length === 0) return;
+
+    allData = rows.slice(1); // Skip headers
+
+    const cadreSet = new Set();
+    allData.forEach(row => {
+      if (row[1]) cadreSet.add(row[1]); // Cadre
     });
+
+    const select = document.getElementById('cadreSelect');
+    [...cadreSet].sort().forEach(cadre => {
+      const option = document.createElement('option');
+      option.value = cadre;
+      option.textContent = cadre;
+      select.appendChild(option);
+    });
+
+    document.getElementById('cadreSelect').addEventListener('change', filterAndDisplay);
+    document.getElementById('searchInput').addEventListener('input', filterAndDisplay);
+
+    filterAndDisplay();
+
+  } catch (err) {
+    console.error("Error loading data:", err);
+    document.getElementById('cadreSelect').innerHTML = '<option>Error loading</option>';
+  }
 }
 
-// Filter table based on search input
-function filterTable() {
-    const searchQuery = document.getElementById('searchInput').value.toLowerCase();
-    const filteredRows = allRowsData.filter(row => 
-        row.some(cell => cell.toLowerCase().includes(searchQuery))
+function filterAndDisplay() {
+  const selectedCadre = document.getElementById('cadreSelect').value;
+  const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
+  const container = document.getElementById('employeeTableContainer');
+
+  let filtered = allData;
+
+  if (selectedCadre) {
+    filtered = filtered.filter(row => row[1] === selectedCadre);
+  }
+
+  if (searchTerm) {
+    filtered = filtered.filter(row =>
+      (row[0] || '').toLowerCase().includes(searchTerm) || // Employee ID
+      (row[4] || '').toLowerCase().includes(searchTerm)    // Name
     );
-    displayTableData(filteredRows);
-}
+  }
 
-// Display filtered table data
-function displayTableData(rows) {
-    const tableBody = document.getElementById('table-body');
-    tableBody.innerHTML = '';
-    rows.forEach(row => {
-        const tr = document.createElement('tr');
-        row.forEach(cellData => {
-            const td = document.createElement('td');
-            td.textContent = cellData || '';
-            tr.appendChild(td);
-        });
+  if (filtered.length === 0) {
+    container.innerHTML = '<p>No employees found.</p>';
+    return;
+  }
 
-        // Use Employee ID (first column) to fetch secondary data
-        const employeeId = row[0]; // Assuming the unique Employee ID is in column A
-        const employeeName = row[1]; // Assuming Employee Name is in column B
-       // tr.onclick = () => fetchSecondarySheetData(employeeId, employeeName);
-        tableBody.appendChild(tr);
+  const grouped = {};
+  filtered.forEach(row => {
+    const place = row[3] || 'Unknown'; // Place of Posting
+    if (!grouped[place]) grouped[place] = [];
+    grouped[place].push(row);
+  });
+
+  const displayHeaders = ['S.No.', 'Employee ID', 'Name', 'Designation', 'Branch', 'Date of Joining'];
+  let table = `<table><thead><tr>`;
+  displayHeaders.forEach(h => table += `<th>${h}</th>`);
+  table += `</tr></thead><tbody>`;
+
+  Object.keys(grouped).sort().forEach(place => {
+    table += `<tr class="place-header"><td colspan="${displayHeaders.length}">${place}</td></tr>`;
+    grouped[place].forEach((row, index) => {
+      table += '<tr>';
+      table += `<td>${index + 1}</td>`;     // S.No.
+      table += `<td>${row[0] || ''}</td>`;  // Employee ID
+      table += `<td>${row[4] || ''}</td>`;  // Name
+      table += `<td>${row[2] || ''}</td>`;  // Designation
+      table += `<td>${row[6] || ''}</td>`;  // Branch
+      table += `<td>${row[5] || ''}</td>`;  // Date of Joining
+      table += '</tr>';
     });
+  });
+
+  table += '</tbody></table>';
+  container.innerHTML = table;
 }
 
-// Fetch and display secondary sheet data using Employee ID
-async function fetchSecondarySheetData(employeeId, employeeName) {
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${secondaryRange}?key=${apiKey}`;
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        if (data.values && data.values.length > 0) {
-            const [headers, ...rows] = data.values;
-
-            // Find the row matching the Employee ID (assuming ID is in the first column)
-            const relevantRow = rows.find(row => row[0] === employeeId);
-
-            if (relevantRow) {
-                showPopupWithSecondaryData(headers, relevantRow, employeeName, employeeId); // Pass employeeId for image
-            } else {
-                alert('Details not found for this employee.');
-            }
-        } else {
-            console.error('No data found in the secondary sheet.');
-        }
-    } catch (error) {
-        console.error('Error fetching secondary sheet data:', error);
-    }
-}
-
-// Show popup with detailed data, Employee Name, and Employee Image
-function showPopupWithSecondaryData(headers, rowData, employeeName, employeeId) {
-    const popup = document.getElementById('popup');
-    const popupContent = document.getElementById('popup-content');
-    const employeeImage = document.getElementById('employeeimage');
-
-    // Set employee image (assuming the image is named based on the employeeId, e.g., 123.jpg)
-    const imageUrl = `images/${employeeId}.jpg`; // Adjust path if needed
-    employeeImage.src = imageUrl;
-
-    // Handle missing image (optional fallback)
-    employeeImage.onerror = () => {
-        employeeImage.src = 'images/default.jpg'; // Default image if not found
-        
-    };
-
-    // Create content for the popup using the secondary sheet data
-    const content = headers.map((header, index) => 
-        `<tr><th>${header}</th><td>${rowData[index] || ''}</td></tr>`
-    ).join('');
-
-    // Set Employee Name as the popup heading and display data
-    popupContent.innerHTML = `
-        <img id="employeeimage" src= "images/${employeeId}.jpg" alt="Employee Image" style="display: block;
-    margin: 0 auto 20px;
-    width: 125px;
-    height: 125px;
-    border-radius: 50%;
-    border: 2px solid white;">
-    <h1>${employeeName}</h1>
-        <table>${content}</table>
-    `;
-    // Show the popup
-    popup.classList.remove('hidden');
-    document.getElementById('popup-overlay').classList.remove('hidden');
-}
-// Close popup
-function closePopup() {
-    document.getElementById('popup').classList.add('hidden');
-    document.getElementById('popup-overlay').classList.add('hidden');
-}
-
-// Fetch and display data on page load
-fetchTableData();
+fetchData();
