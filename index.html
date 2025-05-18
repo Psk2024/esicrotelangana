@@ -1,37 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESIC Telangana Staff List</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Employee Directory</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <div class="container">
-        <img src="esic2.png" alt="ESIC Logo" height="150" width="150">
-        <h1>Staff List - Telangana</h1>
-        <input type="text" id="searchInput" placeholder="Search employees..." oninput="filterTable()">
-        <div class="table-container">
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr id="table-headers"></tr>
-                    </thead>
-                    <tbody id="table-body">
-                        <!-- Employee data rows will be dynamically inserted here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <!-- Popup for employee details -->
-    <div class="popup hidden" id="popup">
-        <button class="close-btn" >×</button>
-        <div id="popup-content">
-            <img id="employeeimage">
-        </div>
-    </div>
-    <div class="popup-overlay hidden" id="popup-overlay"></div>
-    <script src="script.js"></script>
+  <h2>Employee Directory</h2>
+  <select id="cadreSelect">
+    <option value="">All Cadres</option>
+  </select>
+  <input type="text" id="searchInput" placeholder="Search by Name or Employee ID" />
+  <div id="employeeTableContainer"></div>
+  <script src="script.js"></script>
 </body>
 </html>
