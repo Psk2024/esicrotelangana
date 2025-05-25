@@ -136,9 +136,17 @@ orderedPlaces.forEach(place => {
       const cadresToShow = selectedCadre
         ? [selectedCadre]
         : [...new Set([...Object.keys(sanctioned), ...Object.keys(cadreCount)])];
-
-      html += `<table class="summary-table"><thead><tr class="place-header"><th colspan="5">${place} (Sanction & In-position)</th></tr>`;
-      html += `<tr><th>Cadre</th><th>Sanctioned</th><th>In-position</th><th>Vacancy</th><th>Vacancy %</th></tr></thead><tbody>`;
+      
+html += `<div class="summary-container">
+            <div class="summary-header">
+              <span class="toggle-icon">►</span> ${place} (Sanction & In-position)
+            </div>
+            <div class="summary-content" style="display: none;">
+              <table class="summary-table">
+              <thead>
+                <tr><th>Cadre</th><th>Sanctioned</th><th>In-position</th><th>Vacancy</th><th>Vacancy %</th></tr>
+              </thead><tbody>`;
+      
 
       cadresToShow.forEach(cadre => {
         const sanctionedVal = sanctioned[cadre] || 0;
@@ -158,7 +166,7 @@ orderedPlaces.forEach(place => {
                 </tr>`;
       });
 
-      html += '</tbody></table>';
+      html += '</tbody></table></div></div>';
     }
 
     const bgColor = headerColors[colorIndex % headerColors.length];
@@ -184,6 +192,15 @@ orderedPlaces.forEach(place => {
   });
 
   container.innerHTML = html;
+  document.querySelectorAll('.summary-header').forEach(header => {
+  header.addEventListener('click', () => {
+    const content = header.nextElementSibling;
+    const icon = header.querySelector('.toggle-icon');
+    const isOpen = content.style.display === 'block';
+    content.style.display = isOpen ? 'none' : 'block';
+    icon.textContent = isOpen ? '►' : '▼';
+  });
+});
 }
 
 fetchData();
