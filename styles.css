@@ -10,7 +10,6 @@ body {
   font-weight: normal;
   font-style: normal;
 }
-
 table {
   width: 80%;
   margin: 30px auto;
@@ -33,8 +32,7 @@ tr:not(.place-header) {
   border-bottom: 1px solid rgba(0, 20, 0, 0.1);
 }
 
-th:first-child,
-td:first-child {
+th:first-child, td:first-child {
   text-align: center;
 }
 
@@ -63,6 +61,7 @@ th {
 
 h2 {
   color: #333;
+  margin-bottom: 20px;
 }
 
 input::placeholder {
@@ -71,4 +70,18 @@ input::placeholder {
 
 p {
   color: #133;
+}
+
+.summary-table {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.summary-table th, .summary-table td {
+  text-align: center;
+}
+
+.summary-table td {
+  font-weight: bold;
 }
