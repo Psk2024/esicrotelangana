@@ -1,5 +1,5 @@
 const headerColors = [
-  '#e0f7fa', '#f1f8e9', '#fff3e0', '#fce4ec', '#ede7f6', '#e8eaf6'
+  '#808000', '#ffa500', '#ff00ff', '#fce4ec', '#ede7f6', '#e8eaf6'
 ];
 
 const apiKey = 'AIzaSyBLOOYaN0zUBPUkA0FyPot1QL-LFWCpEzc';
@@ -173,9 +173,10 @@ html += `<div class="summary-container">
     colorIndex++;
 
     html += `<table><thead><tr>`;
-    displayHeaders.forEach(h => html += `<th>${h}</th>`);
+    
     html += `</tr></thead><tbody>`;
     html += `<tr class="place-header" style="background-color: ${bgColor};"><td colspan="${displayHeaders.length}">${place}</td></tr>`;
+  displayHeaders.forEach(h => html += `<th style="background-color: #DCDCDC">${h}</th>`);
 
     placeData.forEach((row, index) => {
       html += '<tr>';
