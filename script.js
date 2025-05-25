@@ -105,7 +105,23 @@ function filterAndDisplay() {
   let html = '';
   let colorIndex = 0;
 
-  Object.keys(grouped).sort().forEach(place => {
+  const preferredOrder = ['RO, Telangana', 'MCH, Sanathnagar', 'SSH, Sanathnagar'];
+const orderedPlaces = Object.keys(grouped).sort((a, b) => {
+  const aIndex = preferredOrder.indexOf(a);
+  const bIndex = preferredOrder.indexOf(b);
+
+  if (aIndex !== -1 && bIndex !== -1) {
+    return aIndex - bIndex;
+  } else if (aIndex !== -1) {
+    return -1;
+  } else if (bIndex !== -1) {
+    return 1;
+  } else {
+    return a.localeCompare(b);
+  }
+});
+
+orderedPlaces.forEach(place => {
     const placeData = grouped[place];
     const cadreCount = {};
 
