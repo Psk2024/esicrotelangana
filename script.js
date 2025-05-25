@@ -1,11 +1,43 @@
+const headerColors = [
+  '#e0f7fa', '#f1f8e9', '#fff3e0', '#fce4ec', '#ede7f6', '#e8eaf6'
+];
+
 const apiKey = 'AIzaSyBLOOYaN0zUBPUkA0FyPot1QL-LFWCpEzc';
 const spreadsheetId = '1a4JmwnRPvVHOh5BNOZ-F_sqspasdcowRB7uF-qScd48';
-const range = 'Employees!A1:G';
+
+const employeeRange = 'Employees!A1:G';
+const sanctionedRange = 'SanctionedStrength!A2:C';
 
 let allData = [];
+let sanctionedStrength = {};
+
+async function fetchSanctionedStrength() {
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sanctionedRange}?key=${apiKey}`;
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    const rows = data.values || [];
+
+    sanctionedStrength = {};
+    rows.forEach(row => {
+      const place = row[0];
+      const cadre = row[1];
+      const sanctioned = parseInt(row[2]) || 0;
+
+      if (!sanctionedStrength[place]) {
+        sanctionedStrength[place] = {};
+      }
+      sanctionedStrength[place][cadre] = sanctioned;
+    });
+  } catch (err) {
+    console.error("Error loading sanctioned strength data:", err);
+  }
+}
 
 async function fetchData() {
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?key=${apiKey}`;
+  await fetchSanctionedStrength();
+
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${employeeRange}?key=${apiKey}`;
   try {
     const res = await fetch(url);
     const data = await res.json();
@@ -13,11 +45,11 @@ async function fetchData() {
 
     if (rows.length === 0) return;
 
-    allData = rows.slice(1); // Skip headers
+    allData = rows.slice(1);
 
     const cadreSet = new Set();
     allData.forEach(row => {
-      if (row[1]) cadreSet.add(row[1]); // Cadre
+      if (row[1]) cadreSet.add(row[1]);
     });
 
     const select = document.getElementById('cadreSelect');
@@ -34,7 +66,7 @@ async function fetchData() {
     filterAndDisplay();
 
   } catch (err) {
-    console.error("Error loading data:", err);
+    console.error("Error loading employee data:", err);
     document.getElementById('cadreSelect').innerHTML = '<option>Error loading</option>';
   }
 }
@@ -52,8 +84,8 @@ function filterAndDisplay() {
 
   if (searchTerm) {
     filtered = filtered.filter(row =>
-      (row[0] || '').toLowerCase().includes(searchTerm) || // Employee ID
-      (row[4] || '').toLowerCase().includes(searchTerm)    // Name
+      (row[0] || '').toLowerCase().includes(searchTerm) ||
+      (row[4] || '').toLowerCase().includes(searchTerm)
     );
   }
 
@@ -64,32 +96,78 @@ function filterAndDisplay() {
 
   const grouped = {};
   filtered.forEach(row => {
-    const place = row[3] || 'Unknown'; // Place of Posting
+    const place = row[3] || 'Unknown';
     if (!grouped[place]) grouped[place] = [];
     grouped[place].push(row);
   });
 
   const displayHeaders = ['S.No.', 'Employee ID', 'Name', 'Designation', 'Branch', 'Date of Joining'];
-  let table = `<table><thead><tr>`;
-  displayHeaders.forEach(h => table += `<th>${h}</th>`);
-  table += `</tr></thead><tbody>`;
+  let html = '';
+  let colorIndex = 0;
 
   Object.keys(grouped).sort().forEach(place => {
-    table += `<tr class="place-header"><td colspan="${displayHeaders.length}">${place}</td></tr>`;
-    grouped[place].forEach((row, index) => {
-      table += '<tr>';
-      table += `<td>${index + 1}</td>`;     // S.No.
-      table += `<td>${row[0] || ''}</td>`;  // Employee ID
-      table += `<td>${row[4] || ''}</td>`;  // Name
-      table += `<td>${row[2] || ''}</td>`;  // Designation
-      table += `<td>${row[6] || ''}</td>`;  // Branch
-      table += `<td>${row[5] || ''}</td>`;  // Date of Joining
-      table += '</tr>';
+    const placeData = grouped[place];
+    const cadreCount = {};
+
+    placeData.forEach(row => {
+      const cadre = row[1];
+      if (!cadreCount[cadre]) cadreCount[cadre] = 0;
+      cadreCount[cadre]++;
     });
+
+    const sanctioned = sanctionedStrength[place] || {};
+    if (!searchTerm) {
+      const cadresToShow = selectedCadre
+        ? [selectedCadre]
+        : [...new Set([...Object.keys(sanctioned), ...Object.keys(cadreCount)])];
+
+      html += `<table class="summary-table"><thead><tr class="place-header"><th colspan="5">${place} (Sanction & In-position)</th></tr>`;
+      html += `<tr><th>Cadre</th><th>Sanctioned</th><th>In-position</th><th>Vacancy</th><th>Vacancy %</th></tr></thead><tbody>`;
+
+      cadresToShow.forEach(cadre => {
+        const sanctionedVal = sanctioned[cadre] || 0;
+        const inPosition = cadreCount[cadre] || 0;
+        const vacancy = sanctionedVal - inPosition;
+        const vacancyPercent = sanctionedVal ? ((vacancy / sanctionedVal) * 100).toFixed(1) : '0.0';
+
+        const vacancyStyle = vacancy > 0 ? 'color: red;' : '';
+        const vacancyPercentStyle = vacancy > 0 ? 'color: red;' : '';
+
+        html += `<tr>
+                  <td>${cadre}</td>
+                  <td>${sanctionedVal}</td>
+                  <td>${inPosition}</td>
+                  <td style="${vacancyStyle}">${vacancy}</td>
+                  <td style="${vacancyPercentStyle}">${vacancyPercent}%</td>
+                </tr>`;
+      });
+
+      html += '</tbody></table>';
+    }
+
+    const bgColor = headerColors[colorIndex % headerColors.length];
+    colorIndex++;
+
+    html += `<table><thead><tr>`;
+    displayHeaders.forEach(h => html += `<th>${h}</th>`);
+    html += `</tr></thead><tbody>`;
+    html += `<tr class="place-header" style="background-color: ${bgColor};"><td colspan="${displayHeaders.length}">${place}</td></tr>`;
+
+    placeData.forEach((row, index) => {
+      html += '<tr>';
+      html += `<td>${index + 1}</td>`;
+      html += `<td>${row[0] || ''}</td>`;
+      html += `<td>${row[4] || ''}</td>`;
+      html += `<td>${row[2] || ''}</td>`;
+      html += `<td>${row[6] || ''}</td>`;
+      html += `<td>${row[5] || ''}</td>`;
+      html += '</tr>';
+    });
+
+    html += '</tbody></table>';
   });
 
-  table += '</tbody></table>';
-  container.innerHTML = table;
+  container.innerHTML = html;
 }
 
 fetchData();
