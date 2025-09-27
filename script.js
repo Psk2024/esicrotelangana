@@ -22,7 +22,7 @@ async function fetchData() {
 
     const cadreSet = new Set();
     allData.forEach(row => {
-      if (row[1]) cadreSet.add(row[1]);
+      if (row[2]) cadreSet.add(row[2]);
     });
 
     const select = document.getElementById('cadreSelect');
