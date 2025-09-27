@@ -114,8 +114,8 @@ function filterAndDisplay() {
       html += '<tr>';
       html += `<td>${index + 1}</td>`;
       html += `<td>${highlight(row[0] || '', searchTerm)}</td>`;  // Employee ID
-      html += `<td>${highlight(row[2] || '', searchTerm)}</td>`;  // Name
-      html += `<td>${row[1] || ''}</td>`;                         // Designation
+      html += `<td>${highlight(row[1] || '', searchTerm)}</td>`;  // Name
+      html += `<td>${row[2] || ''}</td>`;                         // Designation
       html += `<td>${highlight(row[7] || '', searchTerm)}</td>`;  // Branch
       html += `<td>${row[8] || ''}</td>`;                         // DOJ
       html += '</tr>';
