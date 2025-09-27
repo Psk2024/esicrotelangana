@@ -58,7 +58,7 @@ function filterAndDisplay() {
   let filtered = allData;
 
   if (selectedCadre) {
-    filtered = filtered.filter(row => row[2] === selectedCadre);
+    filtered = filtered.filter(row => row[7] === selectedCadre);
   }
 
   if (searchTerm) {
@@ -76,7 +76,7 @@ function filterAndDisplay() {
 
   const grouped = {};
   filtered.forEach(row => {
-    const place = row[7] || 'Unknown';
+    const place = row[3] || 'Unknown';
     if (!grouped[place]) grouped[place] = [];
     grouped[place].push(row);
   });
