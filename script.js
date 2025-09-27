@@ -182,10 +182,10 @@ html += `<div class="summary-container">
       html += '<tr>';
       html += `<td>${index + 1}</td>`;
       html += `<td>${row[0] || ''}</td>`;
-      html += `<td>${row[4] || ''}</td>`;
+      html += `<td>${row[1] || ''}</td>`;
       html += `<td>${row[2] || ''}</td>`;
-      html += `<td>${row[6] || ''}</td>`;
-      html += `<td>${row[5] || ''}</td>`;
+      html += `<td>${row[7] || ''}</td>`;
+      html += `<td>${row[8] || ''}</td>`;
       html += '</tr>';
     });
 
