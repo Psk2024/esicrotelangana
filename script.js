@@ -1,3 +1,55 @@
+const headerColors = [
+  '#808000', '#ffa500', '#ff00ff', '#fce4ec', '#ede7f6', '#e8eaf6'
+];
+
+const apiKey = 'AIzaSyBLOOYaN0zUBPUkA0FyPot1QL-LFWCpEzc';
+const spreadsheetId = '1a4JmwnRPvVHOh5BNOZ-F_sqspasdcowRB7uF-qScd48';
+
+const employeeRange = 'Employees2!A1:J';
+
+let allData = [];
+
+async function fetchData() {
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${employeeRange}?key=${apiKey}`;
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    const rows = data.values || [];
+
+    if (rows.length === 0) return;
+
+    allData = rows.slice(1); // remove header row
+
+    const cadreSet = new Set();
+    allData.forEach(row => {
+      if (row[1]) cadreSet.add(row[1]);
+    });
+
+    const select = document.getElementById('cadreSelect');
+    [...cadreSet].sort().forEach(cadre => {
+      const option = document.createElement('option');
+      option.value = cadre;
+      option.textContent = cadre;
+      select.appendChild(option);
+    });
+
+    document.getElementById('cadreSelect').addEventListener('change', filterAndDisplay);
+    document.getElementById('searchInput').addEventListener('input', filterAndDisplay);
+
+    filterAndDisplay();
+
+  } catch (err) {
+    console.error("Error loading employee data:", err);
+    document.getElementById('cadreSelect').innerHTML = '<option>Error loading</option>';
+  }
+}
+
+function highlight(text, searchTerm) {
+  if (!searchTerm) return text;
+  const regex = new RegExp(`(${searchTerm})`, 'gi');
+  return text.replace(regex, '<span class="highlight">$1</span>');
+}
+
 function filterAndDisplay() {
   const selectedCadre = document.getElementById('cadreSelect').value;
   const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
@@ -11,8 +63,9 @@ function filterAndDisplay() {
 
   if (searchTerm) {
     filtered = filtered.filter(row =>
-      (row[0] || '').toLowerCase().includes(searchTerm) ||
-      (row[4] || '').toLowerCase().includes(searchTerm)
+      (row[0] || '').toLowerCase().includes(searchTerm) ||  // Employee ID
+      (row[2] || '').toLowerCase().includes(searchTerm) ||  // Name
+      (row[4] || '').toLowerCase().includes(searchTerm)     // Branch
     );
   }
 
@@ -53,19 +106,18 @@ function filterAndDisplay() {
     const bgColor = headerColors[colorIndex % headerColors.length];
     colorIndex++;
 
-    html += `<table><thead><tr>`;
-    html += `</tr></thead><tbody>`;
+    html += `<table><thead><tr></tr></thead><tbody>`;
     html += `<tr class="place-header" style="background-color: ${bgColor};"><td colspan="${displayHeaders.length}">${place}</td></tr>`;
     displayHeaders.forEach(h => html += `<th style="background-color: #DCDCDC">${h}</th>`);
 
     placeData.forEach((row, index) => {
       html += '<tr>';
       html += `<td>${index + 1}</td>`;
-      html += `<td>${row[0] || ''}</td>`;
-      html += `<td>${row[1] || ''}</td>`;
-      html += `<td>${row[2] || ''}</td>`;
-      html += `<td>${row[7] || ''}</td>`;
-      html += `<td>${row[8] || ''}</td>`;
+      html += `<td>${highlight(row[0] || '', searchTerm)}</td>`;  // Employee ID
+      html += `<td>${highlight(row[2] || '', searchTerm)}</td>`;  // Name
+      html += `<td>${row[1] || ''}</td>`;                         // Designation
+      html += `<td>${highlight(row[7] || '', searchTerm)}</td>`;  // Branch
+      html += `<td>${row[8] || ''}</td>`;                         // DOJ
       html += '</tr>';
     });
 
@@ -74,3 +126,5 @@ function filterAndDisplay() {
 
   container.innerHTML = html;
 }
+
+fetchData();
