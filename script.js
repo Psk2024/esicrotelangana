@@ -53,12 +53,12 @@ function highlight(text, searchTerm) {
 function filterAndDisplay() {
   const selectedCadre = document.getElementById('cadreSelect').value;
   const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
-  const container = document.getElementById('employeeTableContainer');
+  const container  document.getElementById('employeeTableContainer');
 
   let filtered = allData;
 
   if (selectedCadre) {
-    filtered = filtered.filter(row => row[1] === selectedCadre);
+    filtered = filtered.filter(row => row[2] === selectedCadre);
   }
 
   if (searchTerm) {
