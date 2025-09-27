@@ -5,7 +5,7 @@ const headerColors = [
 const apiKey = 'AIzaSyBLOOYaN0zUBPUkA0FyPot1QL-LFWCpEzc';
 const spreadsheetId = '1a4JmwnRPvVHOh5BNOZ-F_sqspasdcowRB7uF-qScd48';
 
-const employeeRange = 'Employees!A1:G';
+const employeeRange = 'Employees2!A1:J';
 const sanctionedRange = 'SanctionedStrength!A2:C';
 
 let allData = [];
