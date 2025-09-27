@@ -22,7 +22,7 @@ async function fetchData() {
 
     const cadreSet = new Set();
     allData.forEach(row => {
-      if (row[2]) cadreSet.add(row[2]);
+      if (row[7]) cadreSet.add(row[7]);
     });
 
     const select = document.getElementById('cadreSelect');
@@ -53,7 +53,7 @@ function highlight(text, searchTerm) {
 function filterAndDisplay() {
   const selectedCadre = document.getElementById('cadreSelect').value;
   const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
-  const container  document.getElementById('employeeTableContainer');
+  const container = document.getElementById('employeeTableContainer');
 
   let filtered = allData;
 
@@ -76,7 +76,7 @@ function filterAndDisplay() {
 
   const grouped = {};
   filtered.forEach(row => {
-    const place = row[3] || 'Unknown';
+    const place = row[7] || 'Unknown';
     if (!grouped[place]) grouped[place] = [];
     grouped[place].push(row);
   });
