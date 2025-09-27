@@ -64,8 +64,8 @@ function filterAndDisplay() {
   if (searchTerm) {
     filtered = filtered.filter(row =>
       (row[0] || '').toLowerCase().includes(searchTerm) ||  // Employee ID
-      (row[2] || '').toLowerCase().includes(searchTerm) ||  // Name
-      (row[4] || '').toLowerCase().includes(searchTerm)     // Branch
+      (row[1] || '').toLowerCase().includes(searchTerm) ||  // Name
+      (row[3] || '').toLowerCase().includes(searchTerm)     // Branch
     );
   }
 
