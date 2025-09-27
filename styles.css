@@ -107,3 +107,8 @@ p {
 .summary-content {
   padding: 0 10px 10px 10px;
 }
+
+.highlight {
+  background-color: yellow;
+  font-weight: bold;
+}
