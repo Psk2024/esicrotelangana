@@ -2,19 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Employee Directory</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <h2>Employee Directory</h2>
-<select id="cadreSelect">
-<option value="">All Cadres</option>
-</select>
+  <header>
+    <h1>Employee Directory</h1>
+    <div class="controls">
+      <select id="cadreSelect">
+        <option value="">All Cadres</option>
+      </select>
+      <input type="text" id="searchInput" placeholder="Search by Name / Employee ID / Branch">
+    </div>
+  </header>
 
-  <input type="text" id="searchInput" placeholder="Search by Name or Employee ID" />
+  <main>
+    <div id="employeeTableContainer"></div>
+  </main>
 
-  <div id="employeeTableContainer"></div>
+  <!-- Popup Modal -->
+  <div id="employeeModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h2>Employee Details</h2>
+      <div id="modalBody"></div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
