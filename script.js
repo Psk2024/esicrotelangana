@@ -1,30 +1,21 @@
-const headerColors = [
-  '#808000', '#ffa500', '#ff00ff', '#fce4ec', '#ede7f6', '#e8eaf6'
-];
-
+const headerColors = ['#808000', '#ffa500', '#ff00ff', '#fce4ec', '#ede7f6', '#e8eaf6'];
 const apiKey = 'AIzaSyBLOOYaN0zUBPUkA0FyPot1QL-LFWCpEzc';
 const spreadsheetId = '1a4JmwnRPvVHOh5BNOZ-F_sqspasdcowRB7uF-qScd48';
-
 const employeeRange = 'Employees2!A1:J';
 
 let allData = [];
+let filteredData = [];
 
 async function fetchData() {
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${employeeRange}?key=${apiKey}`;
   try {
-    const res = await fetch(url);
+    const res = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${employeeRange}?key=${apiKey}`);
     const data = await res.json();
     const rows = data.values || [];
+    if (!rows.length) return;
 
-    if (rows.length === 0) return;
+    allData = rows.slice(1); // remove header
 
-    allData = rows.slice(1); // remove header row
-
-    const cadreSet = new Set();
-    allData.forEach(row => {
-      if (row[7]) cadreSet.add(row[7]);
-    });
-
+    const cadreSet = new Set(allData.map(row => row[7]).filter(Boolean));
     const select = document.getElementById('cadreSelect');
     [...cadreSet].sort().forEach(cadre => {
       const option = document.createElement('option');
@@ -33,49 +24,48 @@ async function fetchData() {
       select.appendChild(option);
     });
 
-    document.getElementById('cadreSelect').addEventListener('change', filterAndDisplay);
+    select.addEventListener('change', filterAndDisplay);
     document.getElementById('searchInput').addEventListener('input', filterAndDisplay);
 
     filterAndDisplay();
-
   } catch (err) {
-    console.error("Error loading employee data:", err);
-    document.getElementById('cadreSelect').innerHTML = '<option>Error loading</option>';
+    console.error(err);
+    document.getElementById('employeeTableContainer').innerHTML =
+      '<p class="error">⚠️ Unable to load employee data.</p>';
   }
 }
 
 function highlight(text, searchTerm) {
   if (!searchTerm) return text;
-  const regex = new RegExp(`(${searchTerm})`, 'gi');
-  return text.replace(regex, '<span class="highlight">$1</span>');
+  return text.replace(new RegExp(`(${searchTerm})`, 'gi'), '<span class="highlight">$1</span>');
 }
 
 function filterAndDisplay() {
   const selectedCadre = document.getElementById('cadreSelect').value;
   const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
-  const container = document.getElementById('employeeTableContainer');
+  filteredData = allData;
 
-  let filtered = allData;
+  if (selectedCadre) filteredData = filteredData.filter(r => r[7] === selectedCadre);
+  if (searchTerm) filteredData = filteredData.filter(r =>
+    (r[0] || '').toLowerCase().includes(searchTerm) ||
+    (r[1] || '').toLowerCase().includes(searchTerm) ||
+    (r[3] || '').toLowerCase().includes(searchTerm)
+  );
 
-  if (selectedCadre) {
-    filtered = filtered.filter(row => row[7] === selectedCadre);
-  }
-
-  if (searchTerm) {
-    filtered = filtered.filter(row =>
-      (row[0] || '').toLowerCase().includes(searchTerm) ||  // Employee ID
-      (row[1] || '').toLowerCase().includes(searchTerm) ||  // Name
-      (row[3] || '').toLowerCase().includes(searchTerm)     // Branch
-    );
-  }
-
-  if (filtered.length === 0) {
-    container.innerHTML = '<p>No employees found.</p>';
+  if (!filteredData.length) {
+    document.getElementById('employeeTableContainer').innerHTML = '<p>No employees found.</p>';
     return;
   }
 
+  displayAll();
+}
+
+function displayAll() {
+  const container = document.getElementById('employeeTableContainer');
+  const searchTerm = document.getElementById('searchInput').value.trim();
+
   const grouped = {};
-  filtered.forEach(row => {
+  filteredData.forEach(row => {
     const place = row[3] || 'Unknown';
     if (!grouped[place]) grouped[place] = [];
     grouped[place].push(row);
@@ -85,46 +75,59 @@ function filterAndDisplay() {
   let html = '';
   let colorIndex = 0;
 
-  const preferredOrder = ['RO, Telangana', 'MCH, Sanathnagar', 'SSH, Sanathnagar'];
-  const orderedPlaces = Object.keys(grouped).sort((a, b) => {
-    const aIndex = preferredOrder.indexOf(a);
-    const bIndex = preferredOrder.indexOf(b);
-
-    if (aIndex !== -1 && bIndex !== -1) {
-      return aIndex - bIndex;
-    } else if (aIndex !== -1) {
-      return -1;
-    } else if (bIndex !== -1) {
-      return 1;
-    } else {
-      return a.localeCompare(b);
-    }
-  });
-
-  orderedPlaces.forEach(place => {
+  Object.keys(grouped).forEach(place => {
     const placeData = grouped[place];
     const bgColor = headerColors[colorIndex % headerColors.length];
     colorIndex++;
 
-    html += `<table><thead><tr></tr></thead><tbody>`;
-    html += `<tr class="place-header" style="background-color: ${bgColor};"><td colspan="${displayHeaders.length}">${place}</td></tr>`;
-    displayHeaders.forEach(h => html += `<th style="background-color: #DCDCDC">${h}</th>`);
+    html += `<table><thead>`;
+    html += `<tr class="place-header" style="background-color:${bgColor};"><td colspan="${displayHeaders.length}">${place}</td></tr>`;
+    html += `<tr>${displayHeaders.map(h => `<th>${h}</th>`).join('')}</tr>`;
+    html += `</thead><tbody>`;
 
-    placeData.forEach((row, index) => {
-      html += '<tr>';
-      html += `<td>${index + 1}</td>`;
-      html += `<td>${highlight(row[0] || '', searchTerm)}</td>`;  // Employee ID
-      html += `<td>${highlight(row[1] || '', searchTerm)}</td>`;  // Name
-      html += `<td>${row[2] || ''}</td>`;                         // Designation
-      html += `<td>${highlight(row[7] || '', searchTerm)}</td>`;  // Branch
-      html += `<td>${row[8] || ''}</td>`;                         // DOJ
-      html += '</tr>';
+    placeData.forEach((row, i) => {
+      html += `<tr class="clickable-row" onclick="showEmployeeModal(${allData.indexOf(row)})">`;
+      html += `<td>${i+1}</td>`;
+      html += `<td>${highlight(row[0] || '', searchTerm)}</td>`;
+      html += `<td>${highlight(row[1] || '', searchTerm)}</td>`;
+      html += `<td>${row[2] || ''}</td>`;
+      html += `<td>${highlight(row[7] || '', searchTerm)}</td>`;
+      html += `<td>${row[8] || ''}</td>`;
+      html += `</tr>`;
     });
 
-    html += '</tbody></table>';
+    html += `</tbody></table>`;
   });
 
+  container.style.opacity = 0;
   container.innerHTML = html;
+  setTimeout(() => container.style.opacity = 1, 50);
 }
+
+// Modal
+function showEmployeeModal(index) {
+  const emp = allData[index];
+  if (!emp) return;
+  const searchTerm = document.getElementById('searchInput').value.trim();
+
+  const modalBody = document.getElementById('modalBody');
+  modalBody.innerHTML = `
+    <p><strong>Employee ID:</strong> ${highlight(emp[0]||'', searchTerm)}</p>
+    <p><strong>Name:</strong> ${highlight(emp[1]||'', searchTerm)}</p>
+    <p><strong>Designation:</strong> ${highlight(emp[2]||'', searchTerm)}</p>
+    <p><strong>Branch:</strong> ${highlight(emp[7]||'', searchTerm)}</p>
+    <p><strong>Gender:</strong> ${emp[4]||''}</p>
+    <p><strong>Date of Birth:</strong> ${emp[5]||''}</p>
+    <p><strong>Date of Retirement:</strong> ${emp[6]||''}</p>
+  `;
+
+  document.getElementById('employeeModal').style.display = 'block';
+}
+
+document.querySelector('.close-btn').onclick = () => {
+  document.getElementById('employeeModal').style.display = 'none';
+};
+window.onclick = e => { if(e.target === document.getElementById('employeeModal')) document.getElementById('employeeModal').style.display = 'none'; };
+window.addEventListener('keydown', e => { if(e.key==='Escape') document.getElementById('employeeModal').style.display='none'; });
 
 fetchData();
