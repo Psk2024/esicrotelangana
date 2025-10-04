@@ -1,37 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>List of Officers/Officials</title>
-  <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+<header>
+ <h1>List of Officers/Officials</h1>
+</header>
+<main>
+  <section class="controls">
+    <select id="cadreSelect">
+      <option value="">All Branches</option>
+    </select>
+    <input type="search" id="searchInput" placeholder="Search employees..." />
+  </section>
+  <section id="employeeTableContainer" aria-live="polite">
+    <!-- Employee table gets injected here -->
+  </section>
+</main>
 
-  <header>
-    <h1>List of Officers/Officials</h1>
-    <div class="controls">
-      <select id="cadreSelect">
-        <option value="">All Cadres</option>
-      </select>
-      <input type="text" id="searchInput" placeholder="Search by Name / Employee ID / Branch">
+<!-- Popup Modal -->
+<div id="employeeModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn">&times;</span>
+    <div style="text-align:left; font-size:1.6rem; font-weight:600; margin-bottom:12px;">
+      <div id="modalTitle" style="text-align:left; font-size:1.6rem; font-weight:600; margin-bottom:12px;"></div>
     </div>
-  </header>
-
-  <main>
-    <div id="employeeTableContainer"></div>
-  </main>
-
-  <!-- Popup Modal -->
-  <div id="employeeModal" class="modal">
-    <div class="modal-content">
-      <span class="close-btn">&times;</span>
-      <div style="text-align:left; font-size:1.6rem; font-weight:600; margin-bottom:12px;">
-    <h2 id="modalTitle"></h2></div>
-      <div id="modalBody"></div>
-    </div>
+    <div id="modalBody"></div>
   </div>
+</div>
 
-  <script src="script.js"></script>
+<script src="script.js" defer></script>
 </body>
 </html>
