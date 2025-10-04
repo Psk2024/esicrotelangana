@@ -114,14 +114,13 @@ function showEmployeeModal(index) {
 
   const modalBody = document.getElementById('modalBody');
   modalBody.innerHTML = `<table>
-  <tr><td><p><strong>Employee ID:/p></strong></td><td><p> ${highlight(emp[0]||'', searchTerm)}</p></td></tr></table>
-    <p><strong>Name:</strong> ${highlight(emp[1]||'', searchTerm)}</p>
-    <p><strong>Designation:</strong> ${highlight(emp[2]||'', searchTerm)}</p>
-    <p><strong>Branch:</strong> ${highlight(emp[7]||'', searchTerm)}</p>
-    <p><strong>Gender:</strong> ${emp[4]||''}</p>
-    <p><strong>Date of Birth:</strong> ${emp[5]||''}</p>
-    <p><strong>Date of Retirement:</strong> ${emp[6]||''}</p>
-  `;
+  <tr><td><p><strong>Employee ID:</p></strong></td><td><p> ${highlight(emp[0]||'', searchTerm)}</p></td></tr>
+  <tr><td>  <p><strong>Designation:</strong></td><td><p>  ${highlight(emp[2]||'', searchTerm)}</p></td></tr>
+  <tr><td>  <p><strong>Branch:</strong></td><td><p>  ${highlight(emp[7]||'', searchTerm)}</p></td></tr>
+ <tr><td>   <p><strong>Gender:</strong></td><td><p>  ${emp[4]||''}</p></td></tr>
+ <tr><td>   <p><strong>Date of Birth:</strong></td><td><p> ${emp[5]||''}</p></td></tr>
+<tr><td>    <p><strong>Date of Retirement:</strong></td><td><p>  ${emp[6]||''}</p></td></tr>
+ </table> `;
 
   document.getElementById('employeeModal').style.display = 'block';
 }
