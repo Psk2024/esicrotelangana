@@ -113,14 +113,16 @@ function showEmployeeModal(index) {
   document.getElementById('modalTitle').textContent = emp[1] || '';
 
   const modalBody = document.getElementById('modalBody');
-  modalBody.innerHTML = `<table>
-  <tr><td><p><strong>Employee ID:</p></strong></td><td><p> ${highlight(emp[0]||'', searchTerm)}</p></td></tr>
-  <tr><td>  <p><strong>Designation:</strong></td><td><p>  ${highlight(emp[2]||'', searchTerm)}</p></td></tr>
-  <tr><td>  <p><strong>Branch:</strong></td><td><p>  ${highlight(emp[7]||'', searchTerm)}</p></td></tr>
- <tr><td>   <p><strong>Gender:</strong></td><td><p>  ${emp[4]||''}</p></td></tr>
- <tr><td>   <p><strong>Date of Birth:</strong></td><td><p> ${emp[5]||''}</p></td></tr>
-<tr><td>    <p><strong>Date of Retirement:</strong></td><td><p>  ${emp[6]||''}</p></td></tr>
- </table> `;
+  modalBody.innerHTML = `
+  <table style="width:100%; border-collapse:collapse;">
+    <tr><td style="padding:4px 8px;"><strong>Employee ID:</strong></td><td style="padding:4px 8px;">${highlight(emp[0]||'', searchTerm)}</td></tr>
+    <tr><td style="padding:4px 8px;"><strong>Designation:</strong></td><td style="padding:4px 8px;">${highlight(emp[2]||'', searchTerm)}</td></tr>
+    <tr><td style="padding:4px 8px;"><strong>Branch:</strong></td><td style="padding:4px 8px;">${highlight(emp[7]||'', searchTerm)}</td></tr>
+    <tr><td style="padding:4px 8px;"><strong>Gender:</strong></td><td style="padding:4px 8px;">${emp[4]||''}</td></tr>
+    <tr><td style="padding:4px 8px;"><strong>Date of Birth:</strong></td><td style="padding:4px 8px;">${emp[5]||''}</td></tr>
+    <tr><td style="padding:4px 8px;"><strong>Date of Retirement:</strong></td><td style="padding:4px 8px;">${emp[6]||''}</td></tr></td>
+  </table>
+`;
 
   document.getElementById('employeeModal').style.display = 'block';
 }
