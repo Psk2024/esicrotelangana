@@ -137,7 +137,7 @@ function showEmployeeModal(index) {
   const modalBody = document.getElementById('modalBody');
 
   const imageUrl = emp[9] || ''; // Assuming image URL is in column 10
-  const name = (emp[1] || 'Employee Details').toUpperCase();
+  const name = emp[1] || 'Employee Details';
 
   // Combine name + image in title area
   const titleHtml = `
