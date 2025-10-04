@@ -317,3 +317,11 @@ tr:nth-child(even) {
     padding: 20px 25px;
   }
   }
+.popup-header {
+    text-align: left;
+    font-size: 1.5rem;   /* or your preferred larger size */
+    font-weight: 600;  /* makes the name more prominent */
+    margin-bottom: 0.1rem;
+    margin-left: 1.2rem; /* aligns the name slightly inside from the left edge */
+    color: #222;       /* ensures good visibility */
+  }
