@@ -109,6 +109,8 @@ function showEmployeeModal(index) {
   const emp = allData[index];
   if (!emp) return;
   const searchTerm = document.getElementById('searchInput').value.trim();
+  
+  document.getElementById('modalTitle').textContent = emp[1] || '';
 
   const modalBody = document.getElementById('modalBody');
   modalBody.innerHTML = `
