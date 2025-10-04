@@ -113,8 +113,8 @@ function showEmployeeModal(index) {
   document.getElementById('modalTitle').textContent = emp[1] || '';
 
   const modalBody = document.getElementById('modalBody');
-  modalBody.innerHTML = `
-    <p><strong>Employee ID:</strong> ${highlight(emp[0]||'', searchTerm)}</p>
+  modalBody.innerHTML = `<table><tr><td>
+    <p><strong>Employee ID:</strong></td><td> ${highlight(emp[0]||'', searchTerm)}</p></td></tr></table>
     <p><strong>Name:</strong> ${highlight(emp[1]||'', searchTerm)}</p>
     <p><strong>Designation:</strong> ${highlight(emp[2]||'', searchTerm)}</p>
     <p><strong>Branch:</strong> ${highlight(emp[7]||'', searchTerm)}</p>
