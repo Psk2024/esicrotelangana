@@ -121,7 +121,6 @@ mark {
 	background-color: rgba(0, 0, 0, 0.75);
 	backdrop-filter: blur(5px);
 	overflow: auto;
-	display: flex;
 	justify-content: center;
 	align-items: center;
 	padding: 20px;
