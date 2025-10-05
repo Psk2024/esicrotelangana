@@ -164,8 +164,8 @@ function displayAll() {
     
     // Group count footer
     html += `<p class="group-count-display" style="
-      text-align: right; 
-      width: 80%; 
+      text-align: center; 
+      width: 50%; 
       margin: 0 auto 30px; 
       padding: 12px 20px; 
       font-size: 1.1em; 
