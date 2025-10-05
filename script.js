@@ -182,9 +182,6 @@ No. of ${place} Officers/Officials: <span style="color: ${bgColor}; font-size: 1
     </p>`;
   }
   
-  // ❌ REMOVED: The overall count display is now handled by updateOverallCountDisplay()
-  // html += `<p id="totalCountDisplay" ... > Overall Unique Employees Displayed: ${totalEmployeeCount} </p>`;
-  
   container.innerHTML = html;
 
 // Attach click event listeners to open modal
@@ -253,11 +250,11 @@ function showEmployeeModal(employeeId) {
   ">
  
     <div id="modal-image-wrapper" style="
-      flex: 0 0 140px; 
+      flex: 0 0 175px; 
       display: flex; 
       justify-content: center; 
       align-items: center;
-      height: 140px;
+      height: 175px;
       background-color: ${accentColor};
       border-radius: 50%;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
