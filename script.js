@@ -1,4 +1,4 @@
-const headerColors = ['#808000', '#ffa500', '#ff00ff', '#fce4ec', '#ede7f6', '#e8eaf6'];
+const headerColors = ['Tomato', 'DodgerBlue', 'SlateBlue', '#fce4ec', '#ede7f6', '#e8eaf6'];
 const apiKey = 'AIzaSyBLOOYaN0zUBPUkA0FyPot1QL-LFWCpEzc';
 const spreadsheetId = '1a4JmwnRPvVHOh5BNOZ-F_sqspasdcowRB7uF-qScd48';
 const employeeRange = 'Employees2!A1:K';
@@ -95,7 +95,7 @@ function filterAndDisplay() {
   filteredData = allData.filter(row => {
     const matchesCadre = selectedCadre ? row[4] === selectedCadre : true;
     const matchesSearch = searchTerm ? 
-      (row[0]?.toLowerCase().includes(searchTerm) || row[1]?.toLowerCase().includes(searchTerm) || row[3]?.toLowerCase().includes(searchTerm))
+      (row[0]?.toLowerCase().includes(searchTerm) || row[1]?.toLowerCase().includes(searchTerm) || row[4]?.toLowerCase().includes(searchTerm))
       : true;
     return matchesCadre && matchesSearch;
   });
@@ -139,10 +139,10 @@ function displayAll() {
     html += `<h2 style="font-size: 1.5em; margin: 30px auto 10px; width: 90%; text-align: left; padding-left: 10px; border-bottom: 2px solid ${bgColor}; color:${bgColor}">${place}</h2>`;
     
     // Add the Table start and Header row
-    html += `<table style="width: 90%; margin: 10px auto 0; border-collapse: separate; border-spacing: 0; background: #fff; border-radius: 16px 16px 0 0; box-shadow: 0 8px 20px rgba(0, 86, 179, 0.15); overflow: hidden;" role="table" aria-label="Employees in ${place}"><thead><tr>`;
+    html += `<table style="width: 90%; margin: 10px auto 0; border-collapse: separate; border-spacing: 0; background: #fff; border-radius: 16px 16px 16px 16px; box-shadow: 0 8px 20px rgba(0, 86, 179, 0.15); overflow: hidden;" role="table" aria-label="Employees in ${place}"><thead><tr>`;
     ['Employee ID', 'Name of the Officer/Official', 'Designation', 'Branch'].forEach(header => {
       // NOTE: Apply th inline styles here since you removed them from CSS
-      html += `<th style="padding: 14px 20px; text-align: left; font-weight: 700; font-size: 16px; background-color: #0056b3; color: #fff; text-transform: uppercase; letter-spacing: 0.05em;">${header}</th>`;
+      html += `<th style="padding: 14px 20px; text-align: center; font-weight: 700; font-size: 16px; background-color: #0056b3; color: #fff; letter-spacing: 0.05em;">${header}</th>`;
     });
     html += '</tr></thead><tbody>';
     
@@ -152,8 +152,9 @@ function displayAll() {
       const rowBg = index % 2 === 1 ? '#f9faff' : '#ffffff';
       html += `<tr tabindex="0" class="clickable-row" data-employee-id="${row[0] || ''}" style="cursor: pointer; transition: background 0.3s ease; background-color: ${rowBg};">`;
       const tdStyle = "padding: 14px 20px; text-align: left; font-weight: 500; font-size: 16px; border-bottom: 1px solid #e0e0e0;";
+      const tdStyleCer = "padding: 14px 20px; text-align: center; font-weight: 500; font-size: 16px; border-bottom: 1px solid #e0e0e0;";
      // html += `<td style="${tdStyle}">${index + 1}</td>`;
-      html += `<td style="${tdStyle}">${highlight(row[0] || '', searchTerm)}</td>`;
+      html += `<td style="${tdStyleCer}">${highlight(row[0] || '', searchTerm)}</td>`;
       html += `<td style="${tdStyle}">${highlight(row[1] || '', searchTerm)}</td>`;
       html += `<td style="${tdStyle}">${row[2] || ''}</td>`;
       html += `<td style="${tdStyle}">${highlight(row[4] || '', searchTerm)}</td>`;
@@ -164,8 +165,8 @@ function displayAll() {
     
     // Group count footer
     html += `<p class="group-count-display" style="
-      text-align: center; 
-      width: 50%; 
+      text-align: right; 
+      width: 80%; 
       margin: 0 auto 30px; 
       padding: 12px 20px; 
       font-size: 1.1em; 
@@ -181,6 +182,9 @@ function displayAll() {
 No. of ${place} Officers/Officials: <span style="color: ${bgColor}; font-size: 1.1em; margin-left: 10px;">${groupCount}</span>
     </p>`;
   }
+  
+  // ❌ REMOVED: The overall count display is now handled by updateOverallCountDisplay()
+  // html += `<p id="totalCountDisplay" ... > Overall Unique Employees Displayed: ${totalEmployeeCount} </p>`;
   
   container.innerHTML = html;
 
@@ -256,7 +260,7 @@ function showEmployeeModal(employeeId) {
       align-items: center;
       height: 175px;
       background-color: ${accentColor};
-      border-radius: 50%;
+      border-radius: 40%;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       overflow: hidden;
     ">
@@ -311,10 +315,10 @@ function showEmployeeModal(employeeId) {
       #modal-details-content {
         flex-direction: column;
         align-items: center;
-        gap: 20px;
+        gap: 10px;
       }
       #modal-image-wrapper {
-        margin-bottom: 10px;
+        margin-bottom: 5px;
       }
       #modal-info-grid {
         grid-template-columns: 1fr; 
@@ -354,3 +358,4 @@ select.addEventListener('change', filterAndDisplay);
 searchInput.addEventListener('input', debounce(filterAndDisplay, 300));
 
 fetchData();
+                  
