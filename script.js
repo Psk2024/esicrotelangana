@@ -109,7 +109,7 @@ for (const [place, placeData] of Object.entries(grouped)) {
   placeData.forEach((row, index) => {
     // NOTE: Apply tr/td inline styles here since you removed them from CSS
     const rowBg = index % 2 === 1 ? '#f9faff' : '#ffffff';
-    html += `<tr tabindex="0" class="clickable-row" data-index="${globalIndex}" style="cursor: pointer; transition: background 0.3s ease; background-color: ${rowBg};">`;
+    html += `<tr tabindex="0" class="clickable-row" data-employee-id="${row[0] || ''}" style="cursor: pointer; transition: background 0.3s ease; background-color: ${rowBg};">`;
     const tdStyle = "padding: 14px 20px; text-align: left; font-weight: 500; font-size: 16px; border-bottom: 1px solid #e0e0e0;";
     html += `<td style="${tdStyle}">${index + 1}</td>`;
     html += `<td style="${tdStyle}">${highlight(row[0] || '', searchTerm)}</td>`;
@@ -124,25 +124,31 @@ for (const [place, placeData] of Object.entries(grouped)) {
 
   container.innerHTML = html;
 
-  // Attach click event listeners to open modal
-  document.querySelectorAll('.clickable-row').forEach(row => {
-    row.addEventListener('click', () => {
-      const idx = Number(row.getAttribute('data-index'));
-      showEmployeeModal(idx);
-    });
+// Attach click event listeners to open modal
+document.querySelectorAll('.clickable-row').forEach(row => {
+  row.addEventListener('click', () => {
+    // ✅ NEW: Get the unique Employee ID
+    const employeeId = row.getAttribute('data-employee-id');
+    showEmployeeModal(employeeId);
   });
+});
 }
 
-function showEmployeeModal(index) {
-  const emp = filteredData[index];
-  if (!emp) return;
+function showEmployeeModal(employeeId) {
+  if (!employeeId) return;
+
+  const emp = allData.find(row => row[0] === employeeId);
+  
+  if (!emp) {
+    console.error('Employee not found for ID:', employeeId);
+    return;
+  }
 
   const modal = document.getElementById('employeeModal');
-  // Removed unused modalTitle reference
   const modalBody = document.getElementById('modalBody');
 
-  const employeeId = emp[0] || '';
-  const imageUrl = employeeId ? `images/${employeeId}.jpg` : ''; // Use empty string to trigger clean SVG fallback
+  const employeeIdfor = emp[0] || '';
+  const imageUrl = employeeIdfor ? `images/${employeeIdfor}.jpg` : ''; // Use empty string to trigger clean SVG fallback
   const name = emp[1] || 'Employee Details';
   const des = emp[2] || 'Designation Not Available';
   
@@ -288,3 +294,4 @@ select.addEventListener('change', filterAndDisplay);
 searchInput.addEventListener('input', debounce(filterAndDisplay, 300));
 
 fetchData();
+                                       
