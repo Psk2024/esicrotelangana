@@ -115,7 +115,7 @@ for (const [place, placeData] of Object.entries(grouped)) {
     html += `<td style="${tdStyle}">${highlight(row[0] || '', searchTerm)}</td>`;
     html += `<td style="${tdStyle}">${highlight(row[1] || '', searchTerm)}</td>`;
     html += `<td style="${tdStyle}">${row[2] || ''}</td>`;
-    html += `<td style="${tdStyle}">${highlight(row[7] || '', searchTerm)}</td>`;
+    html += `<td style="${tdStyle}">${highlight(row[4] || '', searchTerm)}</td>`;
     html += `</tr>`;
     globalIndex++;
   });
