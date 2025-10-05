@@ -5,10 +5,13 @@ const employeeRange = 'Employees2!A1:K';
 
 let allData = [];
 let filteredData = [];
+let totalEmployeeCount = 0; 
 
 const select = document.getElementById('cadreSelect');
 const searchInput = document.getElementById('searchInput');
 const container = document.getElementById('employeeTableContainer');
+// ✅ NEW: Get a reference to the new overall count element
+const overallCountElement = document.getElementById('overallCountDisplay');
 
 // Fetch and initialize data
 async function fetchData() {
@@ -22,6 +25,9 @@ async function fetchData() {
     }
 
     allData = rows.slice(1); // exclude header row
+    
+    const uniqueAllIds = new Set(allData.map(row => row[0]));
+    totalEmployeeCount = uniqueAllIds.size; 
 
     const cadreSet = new Set(allData.map(row => row[4]).filter(Boolean));
     populateCadreOptions([...cadreSet].sort());
@@ -62,6 +68,25 @@ function highlight(text, searchTerm) {
   return text.replace(regex, '<mark style="background-color: #ffd54f; font-weight: 700; color: #5d4300; padding: 0;">$1</mark>');
 }
 
+// ⭐️ NEW FUNCTION: Updates the banner with the overall unique count
+function updateOverallCountDisplay() {
+  if (overallCountElement) {
+    overallCountElement.innerHTML = `
+      <p style="
+        text-align: center; 
+        margin: 0 0 0px; 
+        font-size: 0.7em; 
+        font-weight: 70; 
+        color: #0056b3; 
+        padding: 0px 0px;
+    
+      ">
+        (Total: ${totalEmployeeCount})
+      </p>
+    `;
+  }
+}
+
 // Filter and display employees based on search and cadre
 function filterAndDisplay() {
   const selectedCadre = select.value;
@@ -74,6 +99,12 @@ function filterAndDisplay() {
       : true;
     return matchesCadre && matchesSearch;
   });
+
+  const uniqueFilteredIds = new Set(filteredData.map(row => row[0]));
+  totalEmployeeCount = uniqueFilteredIds.size; 
+  
+  // ✅ NEW CALL: Update the top banner whenever filtering changes
+  updateOverallCountDisplay(); 
 
   if (!filteredData.length) {
     container.innerHTML = '<p>No employees found.</p>';
@@ -95,39 +126,71 @@ function displayAll() {
   let colorIndex = 0;
   let html = '';
   let globalIndex = 0;
-for (const [place, placeData] of Object.entries(grouped)) {
-  const bgColor = headerColors[colorIndex % headerColors.length];
-  colorIndex++;
-  // NOTE: Apply h2 inline styles here since you removed them from CSS
-  html += `<h2 style="font-size: 1.5em; margin: 30px auto 10px; width: 90%; text-align: left; padding-left: 10px; border-bottom: 2px solid ${bgColor}; color:${bgColor}">${place}</h2>`;
-  html += `<table style="width: 90%; margin: 10px auto 30px; border-collapse: separate; border-spacing: 0; background: #fff; border-radius: 16px; box-shadow: 0 8px 20px rgba(0, 86, 179, 0.15); overflow: hidden;" role="table" aria-label="Employees in ${place}"><thead><tr>`;
-  ['S.No.', 'Employee ID', 'Name', 'Designation', 'Branch'].forEach(header => {
-    // NOTE: Apply th inline styles here since you removed them from CSS
-    html += `<th style="padding: 14px 20px; text-align: left; font-weight: 700; font-size: 16px; background-color: #0056b3; color: #fff; text-transform: uppercase; letter-spacing: 0.05em;">${header}</th>`;
-  });
-  html += '</tr></thead><tbody>';
-  placeData.forEach((row, index) => {
-    // NOTE: Apply tr/td inline styles here since you removed them from CSS
-    const rowBg = index % 2 === 1 ? '#f9faff' : '#ffffff';
-    html += `<tr tabindex="0" class="clickable-row" data-employee-id="${row[0] || ''}" style="cursor: pointer; transition: background 0.3s ease; background-color: ${rowBg};">`;
-    const tdStyle = "padding: 14px 20px; text-align: left; font-weight: 500; font-size: 16px; border-bottom: 1px solid #e0e0e0;";
-    html += `<td style="${tdStyle}">${index + 1}</td>`;
-    html += `<td style="${tdStyle}">${highlight(row[0] || '', searchTerm)}</td>`;
-    html += `<td style="${tdStyle}">${highlight(row[1] || '', searchTerm)}</td>`;
-    html += `<td style="${tdStyle}">${row[2] || ''}</td>`;
-    html += `<td style="${tdStyle}">${highlight(row[4] || '', searchTerm)}</td>`;
-    html += `</tr>`;
-    globalIndex++;
-  });
-  html += '</tbody></table>';
-}
+  
+  // Iterate over each group (place)
+  for (const [place, placeData] of Object.entries(grouped)) {
+    const bgColor = headerColors[colorIndex % headerColors.length];
+    colorIndex++;
+    
+    const uniqueGroupIds = new Set(placeData.map(row => row[0]));
+    const groupCount = uniqueGroupIds.size;
 
+    // Add the Group Header (h2)
+    html += `<h2 style="font-size: 1.5em; margin: 30px auto 10px; width: 90%; text-align: left; padding-left: 10px; border-bottom: 2px solid ${bgColor}; color:${bgColor}">${place}</h2>`;
+    
+    // Add the Table start and Header row
+    html += `<table style="width: 90%; margin: 10px auto 0; border-collapse: separate; border-spacing: 0; background: #fff; border-radius: 16px 16px 0 0; box-shadow: 0 8px 20px rgba(0, 86, 179, 0.15); overflow: hidden;" role="table" aria-label="Employees in ${place}"><thead><tr>`;
+    ['Employee ID', 'Name of the Officer/Official', 'Designation', 'Branch'].forEach(header => {
+      // NOTE: Apply th inline styles here since you removed them from CSS
+      html += `<th style="padding: 14px 20px; text-align: left; font-weight: 700; font-size: 16px; background-color: #0056b3; color: #fff; text-transform: uppercase; letter-spacing: 0.05em;">${header}</th>`;
+    });
+    html += '</tr></thead><tbody>';
+    
+    // Add Table Body Rows
+    placeData.forEach((row, index) => {
+      // NOTE: Apply tr/td inline styles here since you removed them from CSS
+      const rowBg = index % 2 === 1 ? '#f9faff' : '#ffffff';
+      html += `<tr tabindex="0" class="clickable-row" data-employee-id="${row[0] || ''}" style="cursor: pointer; transition: background 0.3s ease; background-color: ${rowBg};">`;
+      const tdStyle = "padding: 14px 20px; text-align: left; font-weight: 500; font-size: 16px; border-bottom: 1px solid #e0e0e0;";
+     // html += `<td style="${tdStyle}">${index + 1}</td>`;
+      html += `<td style="${tdStyle}">${highlight(row[0] || '', searchTerm)}</td>`;
+      html += `<td style="${tdStyle}">${highlight(row[1] || '', searchTerm)}</td>`;
+      html += `<td style="${tdStyle}">${row[2] || ''}</td>`;
+      html += `<td style="${tdStyle}">${highlight(row[4] || '', searchTerm)}</td>`;
+      html += `</tr>`;
+      globalIndex++;
+    });
+    html += '</tbody></table>';
+    
+    // Group count footer
+    html += `<p class="group-count-display" style="
+      text-align: right; 
+      width: 80%; 
+      margin: 0 auto 30px; 
+      padding: 12px 20px; 
+      font-size: 1.1em; 
+      font-weight: 700; 
+      color: #111; 
+      background-color: #f0f8ff; 
+      border: 1px solid #d9e7ff; 
+      border-top: none; 
+      border-bottom-left-radius: 16px; 
+      border-bottom-right-radius: 16px;
+      box-shadow: 0 4px 10px rgba(0, 86, 179, 0.08); 
+    ">
+No. of ${place} Officers/Officials: <span style="color: ${bgColor}; font-size: 1.1em; margin-left: 10px;">${groupCount}</span>
+    </p>`;
+  }
+  
+  // ❌ REMOVED: The overall count display is now handled by updateOverallCountDisplay()
+  // html += `<p id="totalCountDisplay" ... > Overall Unique Employees Displayed: ${totalEmployeeCount} </p>`;
+  
   container.innerHTML = html;
 
 // Attach click event listeners to open modal
 document.querySelectorAll('.clickable-row').forEach(row => {
   row.addEventListener('click', () => {
-    // ✅ NEW: Get the unique Employee ID
+    // Get the unique Employee ID
     const employeeId = row.getAttribute('data-employee-id');
     showEmployeeModal(employeeId);
   });
@@ -230,19 +293,19 @@ function showEmployeeModal(employeeId) {
       <div style="font-weight: 400;">${emp[10] || 'N/A'}</div>
 
       <div style="font-weight: 600; color: ${labelColor};">Gender</div>
-      <div style="font-weight: 400;">${emp[4] || 'N/A'}</div>
+      <div style="font-weight: 400;">${emp[5] || 'N/A'}</div>
 
       <div style="font-weight: 600; color: ${labelColor};">Branch</div>
-      <div style="font-weight: 400;">${emp[7] || 'N/A'}</div>
+      <div style="font-weight: 400;">${emp[4] || 'N/A'}</div>
 
       <div style="font-weight: 600; color: ${labelColor};">DoJ in Branch</div>
       <div style="font-weight: 400;">${emp[8] || 'N/A'}</div>
 
       <div style="font-weight: 600; color: ${labelColor};">Date of Birth</div>
-      <div style="font-weight: 400;">${emp[5] || 'N/A'}</div>
+      <div style="font-weight: 400;">${emp[6] || 'N/A'}</div>
 
       <div style="font-weight: 600; color: ${labelColor};">Date of Retirement</div>
-      <div style="font-weight: 400;">${emp[6] || 'N/A'}</div>
+      <div style="font-weight: 400;">${emp[7] || 'N/A'}</div>
     </div>
   </div>
   <style>
@@ -294,4 +357,3 @@ select.addEventListener('change', filterAndDisplay);
 searchInput.addEventListener('input', debounce(filterAndDisplay, 300));
 
 fetchData();
-                                       
