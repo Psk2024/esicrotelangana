@@ -23,7 +23,7 @@ async function fetchData() {
 
     allData = rows.slice(1); // exclude header row
 
-    const cadreSet = new Set(allData.map(row => row[7]).filter(Boolean));
+    const cadreSet = new Set(allData.map(row => row[4]).filter(Boolean));
     populateCadreOptions([...cadreSet].sort());
 
     filterAndDisplay();
