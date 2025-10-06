@@ -10,10 +10,8 @@ let totalEmployeeCount = 0;
 const select = document.getElementById('cadreSelect');
 const searchInput = document.getElementById('searchInput');
 const container = document.getElementById('employeeTableContainer');
-// ✅ NEW: Get a reference to the new overall count element
 const overallCountElement = document.getElementById('overallCountDisplay');
 
-// Fetch and initialize data
 async function fetchData() {
   try {
     const res = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${employeeRange}?key=${apiKey}`);
@@ -24,11 +22,10 @@ async function fetchData() {
       return;
     }
 
-    allData = rows.slice(1); // exclude header row
+    allData = rows.slice(1);
     
     const uniqueAllIds = new Set(allData.map(row => row[0]));
     totalEmployeeCount = uniqueAllIds.size; 
-
     const cadreSet = new Set(allData.map(row => row[4]).filter(Boolean));
     populateCadreOptions([...cadreSet].sort());
 
@@ -39,7 +36,6 @@ async function fetchData() {
   }
 }
 
-// Populate cadre select options
 function populateCadreOptions(cadres) {
   select.innerHTML = '<option value="">All Branches</option>';
   cadres.forEach(cadre => {
@@ -50,7 +46,6 @@ function populateCadreOptions(cadres) {
   });
 }
 
-// Debounce utility
 function debounce(func, wait) {
   let timeout;
   return function(...args) {
@@ -59,16 +54,13 @@ function debounce(func, wait) {
   };
 }
 
-// Highlight search term in text
 function highlight(text, searchTerm) {
   if (!searchTerm) return text;
-  const escapedTerm = searchTerm.replace(/[.*+?^${}()|\[\]\\]/g, '\\$&'); // escape RegExp special chars
+  const escapedTerm = searchTerm.replace(/[.*+?^${}()|[]\\]/g, '\\$&'); // escape RegExp special chars
   const regex = new RegExp(`(${escapedTerm})`, 'gi');
-  // NOTE: Apply highlight inline styles here since you removed them from CSS
   return text.replace(regex, '<mark style="background-color: #ffd54f; font-weight: 700; color: #5d4300; padding: 0;">$1</mark>');
 }
 
-// ⭐️ NEW FUNCTION: Updates the banner with the overall unique count
 function updateOverallCountDisplay() {
   if (overallCountElement) {
     overallCountElement.innerHTML = `
@@ -79,7 +71,6 @@ function updateOverallCountDisplay() {
         font-weight: 70; 
         color: #0056b3; 
         padding: 0px 0px;
-    
       ">
         (Total: ${totalEmployeeCount})
       </p>
@@ -87,7 +78,6 @@ function updateOverallCountDisplay() {
   }
 }
 
-// Filter and display employees based on search and cadre
 function filterAndDisplay() {
   const selectedCadre = select.value;
   const searchTerm = searchInput.value.trim().toLowerCase();
@@ -103,7 +93,6 @@ function filterAndDisplay() {
   const uniqueFilteredIds = new Set(filteredData.map(row => row[0]));
   totalEmployeeCount = uniqueFilteredIds.size; 
   
-  // ✅ NEW CALL: Update the top banner whenever filtering changes
   updateOverallCountDisplay(); 
 
   if (!filteredData.length) {
@@ -114,7 +103,6 @@ function filterAndDisplay() {
   displayAll();
 }
 
-// Display employees grouped by place with clickable rows
 function displayAll() {
   const searchTerm = searchInput.value.trim();
   const grouped = filteredData.reduce((group, row) => {
@@ -127,7 +115,6 @@ function displayAll() {
   let html = '';
   let globalIndex = 0;
   
-  // Iterate over each group (place)
   for (const [place, placeData] of Object.entries(grouped)) {
     const bgColor = headerColors[colorIndex % headerColors.length];
     colorIndex++;
@@ -135,35 +122,29 @@ function displayAll() {
     const uniqueGroupIds = new Set(placeData.map(row => row[0]));
     const groupCount = uniqueGroupIds.size;
 
-    // Add the Group Header (h2)
-    html += `<h2 style="font-size: 1.5em; margin: 30px auto 10px; width: 90%; text-align: left; padding-left: 10px; border-bottom: 2px solid ${bgColor}; color:${bgColor}">${place}</h2>`;
+    html += `<h2 style="font-size: 1.5em; margin: 30px auto 10px; width: 90%; text-align: left; padding-left: 10px; border-bottom: 2px solid ${bgColor}; color:${bgColor}">
+      ${place}</h2>`;
     
-    // Add the Table start and Header row
-    html += `<table style="width: 90%; margin: 10px auto 0; border-collapse: separate; border-spacing: 0; background: #fff; border-radius: 16px 16px 16px 16px; box-shadow: 0 8px 20px rgba(0, 86, 179, 0.15); overflow: hidden;" role="table" aria-label="Employees in ${place}"><thead><tr>`;
+    html += `<table style="width: 90%; margin: 10px auto 0; border-collapse: separate; border-spacing: 0; background: #fff; border-radius: 16px; box-shadow: 0 8px 20px rgba(0, 86, 179, 0.15); overflow: hidden;" role="table" aria-label="Employees in ${place}"><thead><tr>`;
     ['Employee ID', 'Name of the Officer/Official', 'Designation', 'Branch'].forEach(header => {
-      // NOTE: Apply th inline styles here since you removed them from CSS
       html += `<th style="padding: 14px 20px; text-align: center; font-weight: 700; font-size: 16px; background-color: #0056b3; color: #fff; letter-spacing: 0.05em;">${header}</th>`;
     });
     html += '</tr></thead><tbody>';
     
-    // Add Table Body Rows
-    placeData.forEach((row, index) => {
-      // NOTE: Apply tr/td inline styles here since you removed them from CSS
-      const rowBg = index % 2 === 1 ? '#f9faff' : '#ffffff';
-      html += `<tr tabindex="0" class="clickable-row" data-employee-id="${row[0] || ''}" style="cursor: pointer; transition: background 0.3s ease; background-color: ${rowBg};">`;
+    placeData.forEach((row) => {
+      const rowBg = globalIndex % 2 === 1 ? '#f9faff' : '#ffffff';
+      html += `<tr tabindex="0" class="clickable-row" data-employee-id="${row[0] || ''}" data-row-index="${globalIndex}" style="cursor: pointer; transition: background 0.3s ease; background-color: ${rowBg};">`;
       const tdStyle = "padding: 14px 20px; text-align: left; font-weight: 500; font-size: 16px; border-bottom: 1px solid #e0e0e0;";
       const tdStyleCer = "padding: 14px 20px; text-align: center; font-weight: 500; font-size: 16px; border-bottom: 1px solid #e0e0e0;";
-     // html += `<td style="${tdStyle}">${index + 1}</td>`;
       html += `<td style="${tdStyleCer}">${highlight(row[0] || '', searchTerm)}</td>`;
       html += `<td style="${tdStyle}">${highlight(row[1] || '', searchTerm)}</td>`;
       html += `<td style="${tdStyle}">${row[2] || ''}</td>`;
       html += `<td style="${tdStyle}">${highlight(row[4] || '', searchTerm)}</td>`;
-      html += `</tr>`;
+      html += '</tr>';
       globalIndex++;
     });
     html += '</tbody></table>';
     
-    // Group count footer
     html += `<p class="group-count-display" style="
       text-align: right; 
       width: 80%; 
@@ -179,52 +160,43 @@ function displayAll() {
       border-bottom-right-radius: 16px;
       box-shadow: 0 4px 10px rgba(0, 86, 179, 0.08); 
     ">
-No. of ${place} Officers/Officials: <span style="color: ${bgColor}; font-size: 1.1em; margin-left: 10px;">${groupCount}</span>
+      No. of ${place} Officers/Officials: <span style="color: ${bgColor}; font-size: 1.1em; margin-left: 10px;">${groupCount}</span>
     </p>`;
   }
   
-  // ❌ REMOVED: The overall count display is now handled by updateOverallCountDisplay()
-  // html += `<p id="totalCountDisplay" ... > Overall Unique Employees Displayed: ${totalEmployeeCount} </p>`;
-  
   container.innerHTML = html;
 
-// Attach click event listeners to open modal
-document.querySelectorAll('.clickable-row').forEach(row => {
-  row.addEventListener('click', () => {
-    // Get the unique Employee ID
-    const employeeId = row.getAttribute('data-employee-id');
-    showEmployeeModal(employeeId);
+ document.querySelectorAll('.clickable-row').forEach(row => {
+    row.addEventListener('click', () => {
+      const employeeId = row.getAttribute('data-employee-id');
+      const rowIndex = Number(row.getAttribute('data-row-index'));
+      showEmployeeModal(employeeId, rowIndex);
+    });
   });
-});
 }
 
-function showEmployeeModal(employeeId) {
+function showEmployeeModal(employeeId, rowIndex) {
   if (!employeeId) return;
-
-  const emp = allData.find(row => row[0] === employeeId);
   
+  const emp = filteredData[rowIndex];
   if (!emp) {
-    console.error('Employee not found for ID:', employeeId);
+    console.error('Employee not found for ID:', employeeId, 'at filteredData index:', rowIndex);
     return;
   }
 
   const modal = document.getElementById('employeeModal');
   const modalBody = document.getElementById('modalBody');
-
   const employeeIdfor = emp[0] || '';
-  const imageUrl = employeeIdfor ? `images/${employeeIdfor}.jpg` : ''; // Use empty string to trigger clean SVG fallback
-  const name = emp[1] || 'Employee Details';
-  const des = emp[2] || 'Designation Not Available';
+  const imageUrl = employeeIdfor ? `images/${employeeIdfor}.jpg` : 'images/default.png'; // Use empty string to trigger clean SVG fallback
   
-  // Style constants for readability and consistency
+  
   const primaryColor = '#0056b3';
   const labelColor = '#333';
   const detailColor = '#111';
-  const accentColor = '#e0e7f7'; // Light background for image container
+  const accentColor = '#e0e7f7';
   
-  // Modal body with improved inline styles and embedded responsive logic
- modalBody.innerHTML = `
-  <div style="
+  modalBody.innerHTML = `
+   <div style="
     text-align: left; 
     padding-bottom: 15px; 
     margin-bottom: 15px;
@@ -235,13 +207,13 @@ function showEmployeeModal(employeeId) {
       font-size: 2.2em; 
       color: ${primaryColor}; 
       font-weight: 700;
-    ">${name}</h3>
+    ">${emp[1]}</h3>
     <span style="
       font-size: 1.05em; 
       color: #666; 
       display: block; 
       margin-top: 5px;
-    ">${des}</span>
+    ">${emp[2]}</span>
   </div>
   <div id="modal-details-content" style="
     display: flex; 
@@ -251,7 +223,7 @@ function showEmployeeModal(employeeId) {
     border-radius: 12px; 
     background: #fcfcfc; 
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
-  ">
+  ">      
  
     <div id="modal-image-wrapper" style="
       flex: 0 0 175px; 
@@ -264,18 +236,18 @@ function showEmployeeModal(employeeId) {
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       overflow: hidden;
     ">
-      ${imageUrl ? 
-        `<img src="${imageUrl}" alt="Photograph of ${name}" style="
+  ${imageUrl ? 
+        `<img src="${imageUrl}" alt="Test Image" style="
             width: 100%; 
             height: 100%; 
-            border-radius: 50%; 
+            border-radius: 10%; 
             object-fit: cover; 
-            border: 3px solid ${primaryColor};
-        " onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 24 24\\' fill=\\'${primaryColor}\\' opacity=\\'0.7\\'><path d=\\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\\' style=\\'fill: ${primaryColor};\\'/></svg>'; this.style.backgroundColor='${accentColor}'; this.style.border='none'; this.style.padding='20%';">`
+            border: 30px solid ${primaryColor};
+        " onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 24 24\\' fill=\\'${primaryColor}\\' opacity=\\'0.7\\'><path d=\\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\\' style=\\'fill: ${primaryColor};\\'/></svg>'; this.style.backgroundColor='${accentColor}'; this.style.border='none'; this.style.padding='10%';">`
         : 
         `<svg style="width: 80%; height: 80%; fill: ${primaryColor}; opacity: 0.7;" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`
       }
-    </div>
+      </div>
     <div id="modal-info-grid" style="
       flex: 1; 
       display: grid; 
@@ -330,10 +302,11 @@ function showEmployeeModal(employeeId) {
       }
     }
   </style>
-`;
- modal.style.display = 'block'; 
-} 
-// Modal close handlers
+  `;
+
+  modal.style.display = 'block';
+}
+
 const modal = document.getElementById('employeeModal');
 const closeBtn = modal.querySelector('.close-btn');
 
@@ -353,9 +326,7 @@ window.addEventListener('keydown', (e) => {
   }
 });
 
-// Initialize fetch and setup event listeners
 select.addEventListener('change', filterAndDisplay);
 searchInput.addEventListener('input', debounce(filterAndDisplay, 300));
 
 fetchData();
-                  
