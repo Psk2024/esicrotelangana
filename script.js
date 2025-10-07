@@ -224,7 +224,7 @@ function showEmployeeModal(employeeId, rowIndex) {
   ">      
  
     <div id="modal-image-wrapper" style="
-      flex: 0 0 200px; 
+      flex: 0 0 170px; 
       display: flex; 
       justify-content: center; 
       align-items: center;
