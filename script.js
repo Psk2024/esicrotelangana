@@ -187,7 +187,7 @@ function showEmployeeModal(employeeId, rowIndex) {
   const modal = document.getElementById('employeeModal');
   const modalBody = document.getElementById('modalBody');
   const employeeIdfor = emp[0] || '';
-  const imageUrl = employeeIdfor ? `images/${employeeIdfor}.jpg` : 'images/default.png'; // Use empty string to trigger clean SVG fallback
+  const imageUrl = employeeIdfor ? `images/${employeeIdfor}.jpg` : ''; // Use empty string to trigger clean SVG fallback
   
   
   const primaryColor = '#0056b3';
@@ -226,21 +226,21 @@ function showEmployeeModal(employeeId, rowIndex) {
   ">      
  
     <div id="modal-image-wrapper" style="
-      flex: 0 0 175px; 
+      flex: 0 0 200px; 
       display: flex; 
       justify-content: center; 
       align-items: center;
-      height: 175px;
+      height: 200px;
       background-color: ${accentColor};
-      border-radius: 40%;
+      border-radius: 50%;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       overflow: hidden;
     ">
   ${imageUrl ? 
-        `<img src="${imageUrl}" alt="Test Image" style="
+        `<img src="${imageUrl}" alt="Photo of ${emp[1]}" style="
             width: 100%; 
             height: 100%; 
-            border-radius: 10%; 
+            border-radius: 50%; 
             object-fit: cover; 
             border: 30px solid ${primaryColor};
         " onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 24 24\\' fill=\\'${primaryColor}\\' opacity=\\'0.7\\'><path d=\\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\\' style=\\'fill: ${primaryColor};\\'/></svg>'; this.style.backgroundColor='${accentColor}'; this.style.border='none'; this.style.padding='10%';">`
