@@ -83,7 +83,7 @@ function filterAndDisplay() {
   const searchTerm = searchInput.value.trim().toLowerCase();
 
   filteredData = allData.filter(row => {
-    const matchesCadre = selectedCadre ? row[4] === selectedCadre : true;
+    const matchesCadre = selectedCadre ? row[3] === selectedCadre : true;
     const matchesSearch = searchTerm ? 
       (row[0]?.toLowerCase().includes(searchTerm) || row[1]?.toLowerCase().includes(searchTerm) || row[4]?.toLowerCase().includes(searchTerm))
       : true;
