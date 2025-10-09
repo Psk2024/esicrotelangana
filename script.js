@@ -106,7 +106,7 @@ function filterAndDisplay() {
 function displayAll() {
   const searchTerm = searchInput.value.trim();
   const grouped = filteredData.reduce((group, row) => {
-    const place = row[3] || 'Unknown';
+    const place = row[4] || 'Unknown';
     (group[place] ||= []).push(row);
     return group;
   }, {});
