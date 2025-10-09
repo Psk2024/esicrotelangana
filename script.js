@@ -26,7 +26,7 @@ async function fetchData() {
     
     const uniqueAllIds = new Set(allData.map(row => row[0]));
     totalEmployeeCount = uniqueAllIds.size; 
-    const cadreSet = new Set(allData.map(row => row[3]).filter(Boolean));
+    const cadreSet = new Set(allData.map(row => row[4]).filter(Boolean));
     populateCadreOptions([...cadreSet].sort());
 
     filterAndDisplay();
@@ -106,7 +106,7 @@ function filterAndDisplay() {
 function displayAll() {
   const searchTerm = searchInput.value.trim();
   const grouped = filteredData.reduce((group, row) => {
-    const place = row[4] || 'Unknown';
+    const place = row[3] || 'Unknown';
     (group[place] ||= []).push(row);
     return group;
   }, {});
