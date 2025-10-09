@@ -26,7 +26,7 @@ async function fetchData() {
     
     const uniqueAllIds = new Set(allData.map(row => row[0]));
     totalEmployeeCount = uniqueAllIds.size; 
-    const cadreSet = new Set(allData.map(row => row[4]).filter(Boolean));
+    const cadreSet = new Set(allData.map(row => row[3]).filter(Boolean));
     populateCadreOptions([...cadreSet].sort());
 
     filterAndDisplay();
