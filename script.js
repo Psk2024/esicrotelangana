@@ -122,7 +122,7 @@ function displayAll() {
     const uniqueGroupIds = new Set(placeData.map(row => row[0]));
     const groupCount = uniqueGroupIds.size;
 
-    html += `<h2 style="font-size: 1.5em; margin: 30px auto 10px; width: 90%; text-align: left; padding-left: 10px; border-bottom: 2px solid ${bgColor}; color:${headerColors[0]}">
+    html += `<h2 style="font-size: 1.5em; margin: 30px auto 10px; width: 90%; text-align: left; padding-left: 10px; border-bottom: 2px solid ${bgColor}; color:${bgColor}">
       ${place}</h2>`;
     
     html += `<table style="width: 90%; margin: 10px auto 0; border-collapse: separate; border-spacing: 0; background: #fff; border-radius: 16px; box-shadow: 0 8px 20px rgba(0, 86, 179, 0.15); overflow: hidden;" role="table" aria-label="Employees in ${place}"><thead><tr>`;
