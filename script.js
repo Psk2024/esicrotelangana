@@ -82,26 +82,52 @@ function filterAndDisplay() {
   const selectedCadre = select.value;
   const searchTerm = searchInput.value.trim().toLowerCase();
 
+  // Filter data
   filteredData = allData.filter(row => {
+    const empId = row[0]?.toLowerCase() || '';
+    const empName = row[1]?.toLowerCase() || '';
+    const branch = row[4]?.toLowerCase() || '';
+
     const matchesCadre = selectedCadre ? row[4] === selectedCadre : true;
-    const matchesSearch = searchTerm ? 
-      (row[0]?.toLowerCase().includes(searchTerm) || row[1]?.toLowerCase().includes(searchTerm) || row[4]?.toLowerCase().includes(searchTerm))
+    const matchesSearch = searchTerm
+      ? (empId.includes(searchTerm) ||
+         empName.includes(searchTerm) ||
+         branch.includes(searchTerm))
       : true;
+
     return matchesCadre && matchesSearch;
   });
 
-  const uniqueFilteredIds = new Set(filteredData.map(row => row[0]));
-  totalEmployeeCount = uniqueFilteredIds.size; 
-  
-  updateOverallCountDisplay(); 
+  // Unique employee count
+  const uniqueIds = new Set(filteredData.map(row => row[0]));
+  const filteredCount = uniqueIds.size;
 
+  // Update dashboard counters
+  document.getElementById('totalCount').textContent = allData.length;
+  document.getElementById('filteredCount').textContent = filteredCount;
+
+  updateOverallCountDisplay();
+
+  // Empty state (visual friendly)
   if (!filteredData.length) {
-    container.innerHTML = '<p>No employees found.</p>';
+    container.innerHTML = `
+      <div style="
+        padding: 40px;
+        font-size: 1.2em;
+        color: #666;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      ">
+        🔍 No employees found matching your criteria
+      </div>
+    `;
     return;
   }
 
   displayAll();
 }
+
 
 function displayAll() {
   const searchTerm = searchInput.value.trim();
