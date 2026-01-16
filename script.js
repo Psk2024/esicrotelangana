@@ -57,12 +57,20 @@ async function fetchData() {
 function populateCadreOptions() {
   const cadres = [...new Set(allData.map(r => r[4]).filter(Boolean))].sort();
   select.innerHTML = `<option value="">All Branches</option>`;
+
   cadres.forEach(c => {
     const opt = document.createElement("option");
     opt.value = c;
     opt.textContent = c;
     select.appendChild(opt);
   });
+
+  // ✅ DEFAULT SELECTION
+  const defaultBranch = "Regional Director Cell";
+  if (cadres.includes(defaultBranch)) {
+    select.value = defaultBranch;
+    filterAndDisplay(); // auto-load data for default branch
+  }
 }
 
 /* ================= FILTER ================= */
