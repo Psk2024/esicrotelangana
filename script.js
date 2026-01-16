@@ -131,75 +131,98 @@ function filterAndDisplay() {
 
 function displayAll() {
   const searchTerm = searchInput.value.trim();
-  const grouped = filteredData.reduce((group, row) => {
+  let globalIndex = 0;
+
+  // Group by Place (row[3])
+  const grouped = filteredData.reduce((acc, row) => {
     const place = row[3] || 'Unknown';
-    (group[place] ||= []).push(row);
-    return group;
+    acc[place] = acc[place] || [];
+    acc[place].push(row);
+    return acc;
   }, {});
 
-  let colorIndex = 0;
   let html = '';
-  let globalIndex = 0;
-  
-  for (const [place, placeData] of Object.entries(grouped)) {
-    const bgColor = headerColors[colorIndex % headerColors.length];
-    colorIndex++;
-    
-    const uniqueGroupIds = new Set(placeData.map(row => row[0]));
-    const groupCount = uniqueGroupIds.size;
+  let colorIndex = 0;
 
-    html += `<h2 style="font-size: 1.5em; margin: 30px auto 10px; width: 90%; text-align: left; padding-left: 10px; border-bottom: 2px solid ${bgColor}; color:${bgColor}">
-      ${place}</h2>`;
-    
-    html += `<table style="width: 90%; margin: 10px auto 0; border-collapse: separate; border-spacing: 0; background: #fff; border-radius: 16px; box-shadow: 0 8px 20px rgba(0, 86, 179, 0.15); overflow: hidden;" role="table" aria-label="Employees in ${place}"><thead><tr>`;
-    ['Employee ID', 'Name of the Officer/Official', 'Designation', 'Branch'].forEach(header => {
-      html += `<th style="padding: 14px 20px; text-align: center; font-weight: 700; font-size: 16px; background-color: #0056b3; color: #fff; letter-spacing: 0.05em;">${header}</th>`;
-    });
-    html += '</tr></thead><tbody>';
-    
-    placeData.forEach((row) => {
-      const rowBg = globalIndex % 2 === 1 ? '#f9faff' : '#ffffff';
-      html += `<tr tabindex="0" class="clickable-row" data-employee-id="${row[0] || ''}" data-row-index="${globalIndex}" style="cursor: pointer; transition: background 0.3s ease; background-color: ${rowBg};">`;
-      const tdStyle = "padding: 14px 20px; text-align: left; font-weight: 500; font-size: 16px; border-bottom: 1px solid #e0e0e0;";
-      const tdStyleCer = "padding: 14px 20px; text-align: center; font-weight: 500; font-size: 16px; border-bottom: 1px solid #e0e0e0;";
-      html += `<td style="${tdStyleCer}">${highlight(row[0] || '', searchTerm)}</td>`;
-      html += `<td style="${tdStyle}">${highlight(row[1] || '', searchTerm)}</td>`;
-      html += `<td style="${tdStyle}">${row[2] || ''}</td>`;
-      html += `<td style="${tdStyle}">${highlight(row[4] || '', searchTerm)}</td>`;
-      html += '</tr>';
+  for (const [place, placeData] of Object.entries(grouped)) {
+    const headerColor = headerColors[colorIndex % headerColors.length];
+    colorIndex++;
+
+    const uniqueIds = new Set(placeData.map(r => r[0]));
+    const groupCount = uniqueIds.size;
+
+    /* ===== Place Header ===== */
+    html += `
+      <div class="place-section">
+        <h2 style="color:${headerColor}">
+          ${place}
+          <span style="
+            font-size:0.7em;
+            margin-left:10px;
+            color:#555;
+            font-weight:600;
+          ">
+            (${groupCount})
+          </span>
+        </h2>
+
+        <table class="employee-table">
+          <thead>
+            <tr>
+              <th>Employee ID</th>
+              <th>Name</th>
+              <th>Designation</th>
+              <th>Branch</th>
+            </tr>
+          </thead>
+          <tbody>
+    `;
+
+    /* ===== Table Rows ===== */
+    placeData.forEach(row => {
+      html += `
+        <tr class="clickable-row"
+            tabindex="0"
+            data-employee-id="${row[0] || ''}"
+            data-row-index="${globalIndex}">
+          <td>${highlight(row[0] || '', searchTerm)}</td>
+          <td>${highlight(row[1] || '', searchTerm)}</td>
+          <td>${row[2] || '-'}</td>
+          <td>${highlight(row[4] || '', searchTerm)}</td>
+        </tr>
+      `;
       globalIndex++;
     });
-    html += '</tbody></table>';
-    
-    html += `<p class="group-count-display" style="
-      text-align: right; 
-      width: 80%; 
-      margin: 0 auto 30px; 
-      padding: 12px 20px; 
-      font-size: 1.1em; 
-      font-weight: 700; 
-      color: #111; 
-      background-color: #f0f8ff; 
-      border: 1px solid #d9e7ff; 
-      border-top: none; 
-      border-bottom-left-radius: 16px; 
-      border-bottom-right-radius: 16px;
-      box-shadow: 0 4px 10px rgba(0, 86, 179, 0.08); 
-    ">
-      No. of ${place} Officers/Officials: <span style="color: ${bgColor}; font-size: 1.1em; margin-left: 10px;">${groupCount}</span>
-    </p>`;
+
+    html += `
+          </tbody>
+        </table>
+      </div>
+    `;
   }
-  
+
+  /* ===== Render Once (Performance Friendly) ===== */
   container.innerHTML = html;
 
- document.querySelectorAll('.clickable-row').forEach(row => {
+  /* ===== Row Click Events ===== */
+  document.querySelectorAll('.clickable-row').forEach(row => {
     row.addEventListener('click', () => {
-      const employeeId = row.getAttribute('data-employee-id');
-      const rowIndex = Number(row.getAttribute('data-row-index'));
+      const employeeId = row.dataset.employeeId;
+      const rowIndex = Number(row.dataset.rowIndex);
       showEmployeeModal(employeeId, rowIndex);
+    });
+
+    // Keyboard accessibility (Enter key)
+    row.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        const employeeId = row.dataset.employeeId;
+        const rowIndex = Number(row.dataset.rowIndex);
+        showEmployeeModal(employeeId, rowIndex);
+      }
     });
   });
 }
+
 
 function showEmployeeModal(employeeId, rowIndex) {
   if (!employeeId) return;
