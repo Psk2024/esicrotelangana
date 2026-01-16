@@ -267,6 +267,6 @@ mark {
   }
 
   .employee-table tbody::before {
-    height: 56px;
+    height: 20px;
   }
 }
