@@ -229,8 +229,8 @@ mark {
 }
 .employee-table th {
   position: sticky;
-  top: 70px; /* below filter bar */
-  z-index: 5;
+  top: 7px; /* below filter bar */
+  z-index: 6;
 }
 
 .place-section {
@@ -252,11 +252,6 @@ mark {
 }
 .clickable-row:focus-visible {
   outline: 3px solid #0056b3;
-}
-.employee-table thead {
-  position: sticky;
-  top: 70px; /* height of controls bar */
-  z-index: 6;
 }
 
 .employee-table tbody::before {
