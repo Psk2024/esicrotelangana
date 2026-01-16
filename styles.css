@@ -246,3 +246,10 @@ mark {
   outline-offset: -2px;
   background-color: #eaf2ff;
 }
+.employee-table td:last-child {
+  font-weight: 600;
+  color: #003b80;
+}
+.clickable-row:focus-visible {
+  outline: 3px solid #0056b3;
+}
