@@ -10,7 +10,7 @@ let totalEmployeeCount = 0;
 const select = document.getElementById('cadreSelect');
 const searchInput = document.getElementById('searchInput');
 const container = document.getElementById('employeeTableContainer');
-const overallCountElement = document.getElementById('overallCountDisplay');
+
 
 async function fetchData() {
   try {
@@ -103,8 +103,9 @@ function filterAndDisplay() {
   const filteredCount = uniqueIds.size;
 
   // Update dashboard counters
-  document.getElementById('totalCount').textContent = allData.length;
-  document.getElementById('filteredCount').textContent = filteredCount;
+  const totalUniqueIds = new Set(allData.map(row => row[0]));
+document.getElementById('totalCount').textContent = totalUniqueIds.size;
+document.getElementById('filteredCount').textContent = filteredCount;
 
   updateOverallCountDisplay();
 
