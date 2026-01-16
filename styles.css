@@ -227,3 +227,8 @@ mark {
 .employee-table th {
   background: linear-gradient(to right, #0056b3, #4f83ff);
 }
+.employee-table th {
+  position: sticky;
+  top: 70px; /* below filter bar */
+  z-index: 5;
+}
