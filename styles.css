@@ -253,3 +253,15 @@ mark {
 .clickable-row:focus-visible {
   outline: 3px solid #0056b3;
 }
+.employee-table thead {
+  position: sticky;
+  top: 70px; /* height of controls bar */
+  z-index: 6;
+}
+
+.employee-table tbody::before {
+  content: "";
+  display: block;
+  height: 52px; /* height of table header */
+}
+
