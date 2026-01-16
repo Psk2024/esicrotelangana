@@ -61,23 +61,6 @@ function highlight(text, searchTerm) {
   return text.replace(regex, '<mark style="background-color: #ffd54f; font-weight: 700; color: #5d4300; padding: 0;">$1</mark>');
 }
 
-function updateOverallCountDisplay() {
-  if (overallCountElement) {
-    overallCountElement.innerHTML = `
-      <p style="
-        text-align: center; 
-        margin: 0 0 0px; 
-        font-size: 0.7em; 
-        font-weight: 70; 
-        color: #0056b3; 
-        padding: 0px 0px;
-      ">
-        (Total: ${totalEmployeeCount})
-      </p>
-    `;
-  }
-}
-
 function filterAndDisplay() {
   const selectedCadre = select.value;
   const searchTerm = searchInput.value.trim().toLowerCase();
@@ -106,8 +89,6 @@ function filterAndDisplay() {
   const totalUniqueIds = new Set(allData.map(row => row[0]));
 document.getElementById('totalCount').textContent = totalUniqueIds.size;
 document.getElementById('filteredCount').textContent = filteredCount;
-
-  updateOverallCountDisplay();
 
   // Empty state (visual friendly)
   if (!filteredData.length) {
