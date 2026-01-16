@@ -216,3 +216,14 @@ mark {
   margin-top: 4px;
 }
 
+.employee-table {
+  width: 90%;
+  margin: 10px auto;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,86,179,0.15);
+}
+
+.employee-table th {
+  background: linear-gradient(to right, #0056b3, #4f83ff);
+}
