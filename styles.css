@@ -229,7 +229,7 @@ mark {
 }
 .employee-table th {
   position: sticky;
-  top: 7px; /* below filter bar */
+  top: 70px; /* below filter bar */
   z-index: 6;
 }
 
@@ -260,3 +260,13 @@ mark {
   height: 52px; /* height of table header */
 }
 
+
+@media (max-width: 600px) {
+  .employee-table th {
+    top: 92px; /* taller controls bar on mobile */
+  }
+
+  .employee-table tbody::before {
+    height: 56px;
+  }
+}
