@@ -229,7 +229,7 @@ mark {
 }
 .employee-table th {
   position: sticky;
-  top: 70px; /* below filter bar */
+  top: 25px; /* below filter bar */
   z-index: 6;
 }
 
