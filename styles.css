@@ -311,3 +311,11 @@ th {
     margin-top: 8px;
   }
 }
+.emp-modal-body {
+  align-items: stretch;
+}
+
+.emp-photo {
+  height: auto;
+  min-height: 100%;
+}
