@@ -217,7 +217,7 @@ function showEmployeeModal(index) {
         <div class="detail-grid">
           <div class="label">Employee ID</div><div class="value">${e[0] || "-"}</div>
           <div class="label">Branch</div><div class="value">${e[4] || "-"}</div>
-          <div class="label">Place</div><div class="value">${e[3] || "-"}</div>
+          <div class="label">Group</div><div class="value">${e[3] || "-"}</div>
           <div class="label">Gender</div><div class="value">${e[5] || "-"}</div>
           <div class="label">Date of Birth</div><div class="value">${e[6] || "-"}</div>
           <div class="label">Date of Joining</div><div class="value">${e[8] || "-"}</div>
