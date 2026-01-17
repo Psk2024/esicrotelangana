@@ -65,12 +65,6 @@ function populateCadreOptions() {
     select.appendChild(opt);
   });
 
-  // ✅ DEFAULT SELECTION
-  const defaultBranch = "Regional Director Cell";
-  if (cadres.includes(defaultBranch)) {
-    select.value = defaultBranch;
-    filterAndDisplay(); // auto-load data for default branch
-  }
 }
 
 /* ================= FILTER ================= */
