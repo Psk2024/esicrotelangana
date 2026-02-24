@@ -277,9 +277,9 @@ function showEmployeeModal(index) {
           <div class="label">Group</div><div class="value">${e[3] || "-"}</div>
           <div class="label">Gender</div><div class="value">${e[5] || "-"}</div>
           <div class="label">Date of Birth</div><div class="value">${e[6] || "-"}</div>
-          <div class="label">Date of Joining</div><div class="value">${e[8] || "-"}</div>
+          <div class="label">Date of Joining (ESIC)</div><div class="value">${e[10] || "-"}</div>
           <div class="label">Date of Retirement</div><div class="value">${e[7] || "-"}</div>
-          <div class="label">Contact</div><div class="value">${e[10] || "-"}</div>
+          <div class="label">Contact</div><div class="value">${e[11] || "-"}</div>
         </div>
       </div>
     </div>
