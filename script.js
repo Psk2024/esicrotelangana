@@ -64,7 +64,7 @@ const DESIGNATION_GROUP = {
 
 const apiKey = "AIzaSyBLOOYaN0zUBPUkA0FyPot1QL-LFWCpEzc";
 const spreadsheetId = "1a4JmwnRPvVHOh5BNOZ-F_sqspasdcowRB7uF-qScd48";
-const employeeRange = "Employees2!A1:L";
+const employeeRange = "Employees2!A1:M";
 
 /* ================= DOM ================= */
 const select = document.getElementById("cadreSelect");
@@ -278,6 +278,7 @@ function showEmployeeModal(index) {
           <div class="label">Gender</div><div class="value">${e[5] || "-"}</div>
           <div class="label">Date of Birth</div><div class="value">${e[6] || "-"}</div>
           <div class="label">Date of Joining (ESIC)</div><div class="value">${e[10] || "-"}</div>
+          <div class="label">Date of Joining in Current Cadre</div><div class="value">${e[12] || "-"}</div>
           <div class="label">Date of Retirement</div><div class="value">${e[7] || "-"}</div>
           <div class="label">Contact</div><div class="value">${e[11] || "-"}</div>
         </div>
