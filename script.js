@@ -13,12 +13,12 @@ const DESIGNATION_ALIAS = {
   "Office Superintendent": "Social Security Officer",
 
   /* Insurance Medical Officer group */
-  "IMO Gr. I": "SMO/MVO/CMO/MR/IMO",
-  "IMO Gr. II": "SMO/MVO/CMO/MR/IMO",
-  "State Medical Officer":"SMO/MVO/CMO/MR/IMO",
-  "Medical Vigilance Officer":"SMO/MVO/CMO/MR/IMO",
-  "Chief Medical Officer":"SMO/MVO/CMO/MR/IMO",
-  "Medical Referee":"SMO/MVO/CMO/MR/IMO",
+  "IMO Gr. I": "Medical Officers",
+  "IMO Gr. II": "Medical Officers",
+  "State Medical Officer":"Medical Officers",
+  "Medical Vigilance Officer":"Medical Officers",
+  "Chief Medical Officer":"Medical Officers",
+  "Medical Referee":"Medical Officers",
   
   "Cook":"Canteen Staff",
   "Cleaner":"Canteen Staff",
