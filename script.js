@@ -23,6 +23,9 @@ const DESIGNATION_ALIAS = {
 
   "Assistant":"Assistant",
   "Assistant (C)":"Assistant",
+
+  "Assistant Director":"Assistant Director",
+  "Assistant Director (Adhoc)":"Assistant Director",
   
   "Upper Division Clerk":"Upper Division Clerk",
   "Upper Division Clerk (C)":"Upper Division Clerk",
