@@ -20,6 +20,12 @@ const DESIGNATION_ALIAS = {
   "Cook":"Canteen Staff",
   "Cleaner":"Canteen Staff",
   "Tea Maker":"Canteen Staff",
+
+  "Assistant":"Assistant",
+  "Assistant (C)":"Assistant",
+  
+  "Upper Division Clerk":"Upper Division Clerk",
+  "Upper Division Clerk (C)":"Upper Division Clerk",
   
   "Junior Engineer (Electrical)":"Junior Engineers",
   "Junior Engineer (Civil)":"Junior Engineers",
