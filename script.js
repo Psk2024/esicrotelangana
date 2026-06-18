@@ -11,6 +11,7 @@ const DESIGNATION_ALIAS = {
   "Social Security Officer": "Social Security Officer",
   "Branch Manager Gr. II": "Social Security Officer",
   "Office Superintendent": "Social Security Officer",
+  "Office Superintendent II": "Social Security Officer",
 
   /* Insurance Medical Officer group */
   "IMO Gr. I": "Medical Officers",
