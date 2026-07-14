@@ -769,7 +769,6 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 
 .unit-card-all {
-  grid-column: 1 / -1;       /* Spans across all columns */
   border: 2px dashed var(--primary);
   background: linear-gradient(180deg, #fbfcfe, #ffffff);
 }
@@ -900,7 +899,7 @@ input[type="search"]::-webkit-search-cancel-button {
   }
 
   .employee-table thead th {
-    top: 0;
+    z-index: 5;
   }
 
   .emp-modal-body {
