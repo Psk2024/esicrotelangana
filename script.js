@@ -8,6 +8,8 @@ const headerColors = [
 ];
 const DESIGNATION_ALIAS = {
   /* Social Security Officer group */
+  "Joint Director": "Joint Director",
+  "Regional Director": "Joint Director",
   "Social Security Officer": "Social Security Officer",
   "Branch Manager Gr. II": "Social Security Officer",
   "Office Superintendent": "Social Security Officer",
