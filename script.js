@@ -20,6 +20,7 @@ const DESIGNATION_ALIAS = {
   "Medical Vigilance Officer":"Medical Officers",
   "Chief Medical Officer":"Medical Officers",
   "Medical Referee":"Medical Officers",
+  "CMO":"Medical Officers",
   
   "Cook":"Canteen Staff",
   "Cleaner":"Canteen Staff",
