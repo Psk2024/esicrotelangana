@@ -16,6 +16,7 @@ const DESIGNATION_ALIAS = {
   /* Insurance Medical Officer group */
   "IMO Gr. I": "Medical Officers",
   "IMO Gr. II": "Medical Officers",
+  "CMO": "Medical Officers",
   "State Medical Officer":"Medical Officers",
   "Medical Vigilance Officer":"Medical Officers",
   "Chief Medical Officer":"Medical Officers",
